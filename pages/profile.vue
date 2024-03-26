@@ -1,20 +1,22 @@
 <script setup lang="ts">
+import type { Database, Tables } from '../types/supabase'
+import { useAccountsStore } from '~/stores/accounts'
 const user = useSupabaseUser()
-const supabase = useSupabaseClient()
+const supabase = useSupabaseClient<Database>()
 const router = useRouter()
 
+const store = useAccountsStore()
+const { data: accounts, fetching, error } = storeToRefs(store)
+
 const email = ref<string | undefined>('')
-const accountName = ref<string | undefined>('')
-const amount = ref<number | undefined>()
-const description = ref<number | undefined>()
+const accountName = ref<string>('')
+const amount = ref(null)
+const description = ref(null)
 
 definePageMeta({
   middleware: ['auth']
 })
 
-if (user.value) {
-  email.value = user.value?.email
-}
 
 
 const logout = async () => {
@@ -26,42 +28,50 @@ const logout = async () => {
     if (error instanceof Error) console.log(error.message)
   }
 }
-const session = await supabase.auth.getSession()
-console.log(session)
 
-const addAccount = async () => {
-  try {
-    const newAccount = {
-      name: accountName.value,
-      user_id: user.value?.id,
-      description: description.value,
-      amount: amount.value
-    }
-    if (!accountName) return
-    const { data, error } = await supabase.from('account').insert([newAccount]).select()
-    console.log('Data', data)
 
-  } catch (error) {
-    console.log('Error:', error)
-  }
+
+// const updateAccount = async () => {
+//   console.log('test')
+//   try {
+//     const updatedAccount = {
+//       name: 'test',
+//       description: 'also a test',
+//       amount: 123
+//     }
+
+//     const { data, error } = await supabase.from('account').update(updatedAccount).eq('id', '599e73a4-9d7f-4a8a-a8b8-6a16ba29b34b').select()
+
+//     console.log('updated data', data)
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
+
+const addAccount = async (e) => {
+  console.log()
 }
 
-const updateAccount = async () => {
-  console.log('test')
+const fetchAccounts = async () => {
   try {
-    const updatedAccount = {
-      name: 'test',
-      description: 'also a test',
-      amount: 123
-    }
+    store.reverseFetching()
+    const { data } = await supabase.from("account").select("*");
+    if (!data) return;
 
-    const { data, error } = await supabase.from('account').update(updatedAccount).eq('id', '599e73a4-9d7f-4a8a-a8b8-6a16ba29b34b').select()
+    data.forEach(account => store.addAccount(account))
 
-    console.log('updated data', data)
-  } catch (error) {
-    console.log(error)
+  } catch (err) {
+    store.setError(err)
+    console.log("Something went wrong", error);
+  } finally {
+    store.reverseFetching()
   }
-}
+};
+
+
+onMounted(() => {
+  fetchAccounts()
+})
 
 </script>
 <template>
@@ -90,11 +100,16 @@ const updateAccount = async () => {
           Account</button>
       </div>
     </form>
-    <form @submit.prevent="updateAccount">
+    <!-- <form @submit.prevent="updateAccount">
       <button type="submit"
         class="rounded-md hover:bg-primary-200 transition-colors px-3 py-2 bg-primary block text-white">Update
         Account</button>
-    </form>
-
+    </form> -->
   </div>
+  <ul v-if="!fetching">
+    <li v-for="(account, index) in accounts" :key="index">
+      {{ account.name }} - {{ account.amount }}
+      <!-- <button @click="deleteAccount(account.id, index)">Delete Account</button> -->
+    </li>
+  </ul>
 </template>
