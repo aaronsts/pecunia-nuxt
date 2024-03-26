@@ -1,98 +1,73 @@
 <script setup lang="ts">
-import type { Database, Tables } from '../types/supabase'
 import { useAccountsStore } from '~/stores/accounts'
-const user = useSupabaseUser()
-const supabase = useSupabaseClient<Database>()
-const router = useRouter()
 
-const store = useAccountsStore()
-const { data: accounts, fetching, error } = storeToRefs(store)
-
-const email = ref<string | undefined>('')
-const accountName = ref<string>('')
-const amount = ref(null)
-const description = ref(null)
+import { useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import * as z from 'zod'
 
 definePageMeta({
   middleware: ['auth']
 })
 
+const user = useSupabaseUser()
+const account = useAccounts()
 
+const store = useAccountsStore()
+const { data: accounts, fetching } = storeToRefs(store)
 
-const logout = async () => {
-  try {
-    const { error } = await supabase.auth.signOut()
-    if (error) throw error;
-    router.push('/login')
-  } catch (error) {
-    if (error instanceof Error) console.log(error.message)
+const newAccountFormSchema = toTypedSchema(z.object({
+  name: z.string(),
+  amount: z.number(),
+  description: z.string().optional(),
+}))
+const { handleSubmit, errors, defineField } = useForm({ validationSchema: newAccountFormSchema })
+
+const onSubmit = handleSubmit((values) => {
+  if (!user.value) return
+  const newAccount = {
+    name: values.name,
+    amount: values.amount,
+    description: values.description,
+    user_id: user.value.id,
   }
-}
 
+  account.add(newAccount)
 
+})
 
-// const updateAccount = async () => {
-//   console.log('test')
-//   try {
-//     const updatedAccount = {
-//       name: 'test',
-//       description: 'also a test',
-//       amount: 123
-//     }
-
-//     const { data, error } = await supabase.from('account').update(updatedAccount).eq('id', '599e73a4-9d7f-4a8a-a8b8-6a16ba29b34b').select()
-
-//     console.log('updated data', data)
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
-
-const addAccount = async (e) => {
-  console.log()
-}
-
-const fetchAccounts = async () => {
-  try {
-    store.reverseFetching()
-    const { data } = await supabase.from("account").select("*");
-    if (!data) return;
-
-    data.forEach(account => store.addAccount(account))
-
-  } catch (err) {
-    store.setError(err)
-    console.log("Something went wrong", error);
-  } finally {
-    store.reverseFetching()
-  }
-};
-
+const [name, nameAttr] = defineField('name')
+const [amount, amountAttr] = defineField('amount')
+const [description, descriptionAttr] = defineField('description')
 
 onMounted(() => {
-  fetchAccounts()
+  account.fetchAll()
 })
 
 </script>
 <template>
-  <p>Hello {{ email }}</p>
-  <button @click="logout" type="button">Logout</button>
+
   <div>
-    <form @submit.prevent="addAccount" class="max-w-sm">
+    <form @submit.prevent="onSubmit" class="max-w-sm">
       <div class="sm:col-span-4">
         <label for="account" class="block text-sm font-medium leading-6 text-neutral-900">Account Name</label>
-        <input id="account" name="account" type="text" v-model="accountName"
-          class="block w-full rounded-md border-0 py-1.5 text-neutral-900 shadow-sm ring-1 ring-primary-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-300 sm:text-sm sm:leading-6" />
+        <input id="account" name="account" type="text" v-model="name" v-bind="nameAttr"
+          :class="{ 'ring-danger': errors.name }"
+          class="block w-full rounded-md  border-0 py-1.5 text-neutral-900 shadow-sm ring-1 ring-primary-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-300 sm:text-sm sm:leading-6" />
+        <span class="text-danger">{{ errors.name }}</span>
       </div>
       <div class="sm:col-span-4">
         <label for="amount" class="block text-sm font-medium leading-6 text-neutral-900">Amount</label>
-        <input id="amount" name="amount" type="number" v-model="amount"
+        <input id="amount" name="amount" type="number" v-model="amount" v-bind="amountAttr"
+          :class="{ 'ring-danger': errors.amount }"
           class="block w-full rounded-md border-0 py-1.5 text-neutral-900 shadow-sm ring-1 ring-primary-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-300 sm:text-sm sm:leading-6" />
+        <span class="text-danger">{{ errors.amount }}</span>
       </div>
       <div class="sm:col-span-4">
         <label for="description" class="block text-sm font-medium leading-6 text-neutral-900">Description</label>
-        <input id="description" name="description" type="text" v-model="description"
+        <input id="description" name="description" type="text" v-model="description" v-bind="descriptionAttr"
+          :class="{ 'ring-danger': errors.description }"
           class="block w-full rounded-md border-0 py-1.5 text-neutral-900 shadow-sm ring-1 ring-primary-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-300 sm:text-sm sm:leading-6" />
+        <span class="text-danger">{{ errors.description }}</span>
       </div>
       <div class="mt-2">
         <button type="submit"
@@ -100,16 +75,11 @@ onMounted(() => {
           Account</button>
       </div>
     </form>
-    <!-- <form @submit.prevent="updateAccount">
-      <button type="submit"
-        class="rounded-md hover:bg-primary-200 transition-colors px-3 py-2 bg-primary block text-white">Update
-        Account</button>
-    </form> -->
   </div>
   <ul v-if="!fetching">
-    <li v-for="(account, index) in accounts" :key="index">
-      {{ account.name }} - {{ account.amount }}
-      <!-- <button @click="deleteAccount(account.id, index)">Delete Account</button> -->
+    <li v-for="(a, index) in accounts" :key="index">
+      {{ a.name }} - {{ a.amount }}
+      <button @click="account.delete(a.id, index)">Delete Account</button>
     </li>
   </ul>
 </template>

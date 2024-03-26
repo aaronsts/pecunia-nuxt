@@ -15,6 +15,7 @@ export const useAccountsStore = defineStore("accounts", {
 			if (!account) return;
 			this.data.push(account);
 		},
+
 		setError(error: any) {
 			this.error = error;
 		},

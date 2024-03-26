@@ -6,4 +6,28 @@
 	body {
 		@apply bg-white text-black;
 	}
+
+	h1 {
+		@apply text-7xl font-bold leading-tight;
+	}
+
+	h2 {
+		@apply text-5xl font-bold leading-tight;
+	}
+
+	h3 {
+		@apply text-4xl;
+	}
+
+	h4 {
+		@apply text-3xl;
+	}
+
+	h5 {
+		@apply text-2xl;
+	}
+
+	p {
+		@apply text-lg leading-normal;
+	}
 }
