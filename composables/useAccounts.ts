@@ -10,9 +10,12 @@ export const useAccounts = () => {
 		async fetchAll() {
 			try {
 				store.reverseFetching();
-				const { data } = await supabase.from("account").select("*");
+				const { data } = await supabase
+					.from("account")
+					.select("*")
+					.order("name", { ascending: true });
 				if (!data) return;
-				data.forEach((account) => store.addAccount(account));
+				data.forEach((account) => store.addAccountState(account));
 			} catch (err) {
 				store.setError(err);
 				console.log("Something went wrong", error);
@@ -32,15 +35,35 @@ export const useAccounts = () => {
 				if (!data) return;
 				if (error) throw error;
 
-				store.addAccount(data);
+				store.addAccountState(data);
 			} catch (error) {
 				store.setError(error);
 			}
 		},
+
+		async update(account: Tables<"account">, index: number) {
+			try {
+				const { data, error } = await supabase
+					.from("account")
+					.update(account)
+					.eq("id", account.id)
+					.select()
+					.single();
+
+				if (!data) return;
+				store.updateAccountState(data, index);
+
+				if (error) throw error;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+
 		async delete(id: string, index: number) {
 			try {
-				store.data.splice(index, 1);
+				store.deleteAccountState(index);
 				const { error } = await supabase.from("account").delete().eq("id", id);
+				if (error) throw error;
 			} catch (error) {
 				console.log(error);
 			}

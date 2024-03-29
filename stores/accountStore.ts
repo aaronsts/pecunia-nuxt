@@ -3,17 +3,29 @@ import type { Tables } from "~/types/supabase";
 
 export const useAccountsStore = defineStore("accounts", {
 	state: () => ({
+		isInitialized: false,
 		data: [] as Tables<"account">[],
 		error: null,
 		fetching: false,
 	}),
 	actions: {
-		reverseFetching() {
-			!this.fetching;
+		initialized() {
+			this.isInitialized = !this.isInitialized;
 		},
-		addAccount(account: Tables<"account">) {
+		reverseFetching() {
+			this.fetching = !this.fetching;
+		},
+		addAccountState(account: Tables<"account">) {
 			if (!account) return;
 			this.data.push(account);
+		},
+
+		updateAccountState(account: Tables<"account">, index: number) {
+			this.data[index] = account;
+		},
+
+		deleteAccountState(index: number) {
+			this.data.splice(index, 1);
 		},
 
 		setError(error: any) {
