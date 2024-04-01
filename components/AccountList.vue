@@ -8,7 +8,6 @@ const { accounts, isfetched } = storeToRefs(store)
 
 <template>
   <div>
-    {{ console.log(accounts) }}
     <ul v-if="!isfetched">
       <li v-for="(account, index) in accounts" :key="account.id" class="flex items-center gap-2">
         <Account :account="account" :index="index" />

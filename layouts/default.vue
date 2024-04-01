@@ -27,6 +27,8 @@ const { user } = storeToRefs(userStore)
 
 const accountStore = useAccountsStore()
 const categoryStore = useCategoryStore()
+const payeeStore = usePayeeStore()
+const transactionStore = useTransactionStore()
 
 onMounted(() => {
   if (!accountStore.isInitialized) {
@@ -36,7 +38,10 @@ onMounted(() => {
   if (!categoryStore.isInitialized) {
     categoryStore.getCategories()
     categoryStore.initialized()
-
+  }
+  if (!transactionStore.isInitialized) {
+    transactionStore.getTransactions()
+    transactionStore.initialized()
   }
 })
 </script>

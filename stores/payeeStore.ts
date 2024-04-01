@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { ICategory } from "~/types";
+import type { IPayee } from "~/types";
 import type { Database, Tables } from "~/types/supabase";
 
 export const usePayeeStore = defineStore("payeeStore", () => {
@@ -35,7 +35,7 @@ export const usePayeeStore = defineStore("payeeStore", () => {
 		}
 	};
 
-	const addPayee = async (payee: Tables<"payee"> | IPayee) => {
+	const addPayee = async (payee: IPayee) => {
 		try {
 			const { data, error } = await supabase
 				.from("payee")
@@ -52,6 +52,17 @@ export const usePayeeStore = defineStore("payeeStore", () => {
 		}
 	};
 
+	const deletePayee = async (id: number) => {
+		try {
+			const { error } = await supabase.from("payee").delete().eq("id", id);
+			if (error) throw error;
+			payees.value = payees.value.filter((payee) => payee.id !== id);
+			console.log("New Array:", payees.value);
+		} catch (error) {
+			console.log("Error:", error);
+		}
+	};
+
 	return {
 		isInitialized,
 		error,
@@ -60,5 +71,6 @@ export const usePayeeStore = defineStore("payeeStore", () => {
 		initialized,
 		getPayees,
 		addPayee,
+		deletePayee,
 	};
 });

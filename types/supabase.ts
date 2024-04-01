@@ -109,6 +109,7 @@ export type Database = {
           category_id: number
           description: string | null
           id: number
+          payee_id: number | null
           transaction_date: string
           user_id: string
         }
@@ -118,6 +119,7 @@ export type Database = {
           category_id: number
           description?: string | null
           id?: number
+          payee_id?: number | null
           transaction_date?: string
           user_id: string
         }
@@ -127,6 +129,7 @@ export type Database = {
           category_id?: number
           description?: string | null
           id?: number
+          payee_id?: number | null
           transaction_date?: string
           user_id?: string
         }
@@ -143,6 +146,13 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categorie"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_transaction_payee_id_fkey"
+            columns: ["payee_id"]
+            isOneToOne: false
+            referencedRelation: "payee"
             referencedColumns: ["id"]
           },
           {

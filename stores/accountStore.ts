@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import type { IAccount } from "~/types";
-import type { Tables } from "~/types/supabase";
+import type { Database, Tables } from "~/types/supabase";
 
 export const useAccountsStore = defineStore("accountStore", () => {
-	const supabase = useSupabaseClient();
+	const supabase = useSupabaseClient<Database>();
 	// State
 	const isInitialized = ref(false);
 	const accounts = ref<Tables<"account">[]>([]);
@@ -26,23 +26,45 @@ export const useAccountsStore = defineStore("accountStore", () => {
 				.select("*")
 				.order("name", { ascending: true });
 			if (!data) return;
-			data.forEach((account) => addAccount(account));
+			data.forEach((account) => accounts.value.push(account));
 		} catch (err) {
-			setError(err);
 			console.log("Something went wrong", error);
 		} finally {
 			fetching();
 		}
 	};
 
-	// TODO: Add supabase call to add, update and delete functions
-	const addAccount = (account: IAccount) => {
-		if (!account) return;
-		accounts.value.push(account);
+	const addAccount = async (account: IAccount) => {
+		try {
+			const { data, error } = await supabase
+				.from("account")
+				.insert([account])
+				.select()
+				.single();
+			if (error) throw error;
+			if (!data) return;
+			accounts.value.push(data);
+		} catch (error) {
+			console.log("Account Error:", error);
+		}
 	};
 
-	const updateAccount = (account: Tables<"account">, index: number) => {
-		accounts.value[index] = account;
+	const updateAccount = async (account: Tables<"account">, index: number) => {
+		try {
+			const { data, error } = await supabase
+				.from("account")
+				.update(account)
+				.eq("id", account.id)
+				.select()
+				.single();
+
+			if (!data) return;
+			if (error) throw error;
+
+			accounts.value[index] = account;
+		} catch (error) {
+			console.log("Update Account Error:", error);
+		}
 	};
 
 	const deleteAccount = async (id: string, index: number) => {
@@ -53,9 +75,6 @@ export const useAccountsStore = defineStore("accountStore", () => {
 		} catch (error) {
 			console.log(error);
 		}
-	};
-	const setError = (error: any) => {
-		error.value = error.value;
 	};
 
 	return {
@@ -69,6 +88,5 @@ export const useAccountsStore = defineStore("accountStore", () => {
 		addAccount,
 		updateAccount,
 		deleteAccount,
-		setError,
 	};
 });
