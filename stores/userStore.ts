@@ -15,6 +15,7 @@ export const useUserStore = defineStore("userStore", () => {
 				email: email,
 				password: password,
 			});
+			accountStore.getAccounts();
 			if (error) throw error;
 		} catch (error: any) {
 			console.error("Login error:", error.message);
@@ -36,7 +37,6 @@ export const useUserStore = defineStore("userStore", () => {
 
 	const loadUserData = async () => {
 		try {
-			accountStore.fetchAll();
 		} catch (error: any) {
 			console.error("Failed to load user profile:", error.message);
 		}

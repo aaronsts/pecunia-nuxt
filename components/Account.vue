@@ -7,7 +7,7 @@ import * as z from 'zod'
 const { account, index } = defineProps<{ account: Tables<'account'>, index: number }>()
 
 const user = useSupabaseUser()
-const accountActions = useAccounts()
+const accountStore = useAccountsStore()
 
 // Create Account
 const newAccountFormSchema = toTypedSchema(z.object({
@@ -33,7 +33,7 @@ const updateAccount = handleSubmit((values) => {
     created_at: account.created_at,
     user_id: user.value.id,
   }
-  accountActions.update(updatedAccount, index)
+  accountStore.updateAccount(updatedAccount, index)
 })
 </script>
 
@@ -64,7 +64,7 @@ const updateAccount = handleSubmit((values) => {
       <button type="submit" class="hover:text-success transition-colors">Update
         Account</button>
       <button class="text-danger/80 hover:text-danger  transition-all"
-        @click="accountActions.delete(account.id, index)">Delete
+        @click="accountStore.deleteAccount(account.id, index)">Delete
         Account</button>
     </div>
   </form>

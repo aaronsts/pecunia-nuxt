@@ -8,7 +8,7 @@ definePageMeta({
 })
 
 const user = useSupabaseUser()
-const accountActions = useAccounts()
+const accountStore = useAccountsStore()
 
 
 // Create Account
@@ -27,7 +27,7 @@ const createNewAccount = handleSubmit((values) => {
     description: values.description,
     user_id: user.value.id,
   }
-  accountActions.add(newAccount)
+  accountStore.addAccount(newAccount)
 
 })
 

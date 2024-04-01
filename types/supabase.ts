@@ -44,46 +44,65 @@ export type Database = {
           },
         ]
       }
-      Categorie: {
-        Row: {
-          created_at: string
-          description: string | null
-          id: number
-          name: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          id?: number
-          name: string
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          id?: number
-          name?: string
-        }
-        Relationships: []
-      }
-      Payee: {
+      categorie: {
         Row: {
           created_at: string
           id: number
           name: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
           id?: number
           name: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
           id?: number
           name?: string
+          user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "public_categorie_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
-      Transaction: {
+      payee: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_payee_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transaction: {
         Row: {
           account_id: string
           amount: number
@@ -123,7 +142,7 @@ export type Database = {
             foreignKeyName: "public_Transaction_category_id_fkey"
             columns: ["category_id"]
             isOneToOne: false
-            referencedRelation: "Categorie"
+            referencedRelation: "categorie"
             referencedColumns: ["id"]
           },
           {

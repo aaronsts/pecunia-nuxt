@@ -21,17 +21,22 @@
 </template>
 
 <script setup lang="ts">
-const { isInitialized, initialized } = useAccountsStore()
 const userStore = useUserStore()
 
 const { user } = storeToRefs(userStore)
 
-const accountActions = useAccounts()
+const accountStore = useAccountsStore()
+const categoryStore = useCategoryStore()
 
 onMounted(() => {
-  if (!isInitialized) {
-    accountActions.fetchAll()
-    initialized()
+  if (!accountStore.isInitialized) {
+    accountStore.getAccounts()
+    accountStore.initialized()
+  }
+  if (!categoryStore.isInitialized) {
+    categoryStore.getCategories()
+    categoryStore.initialized()
+
   }
 })
 </script>
