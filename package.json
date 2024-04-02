@@ -14,8 +14,6 @@
 		"@pinia/nuxt": "^0.5.1",
 		"@vee-validate/zod": "^4.12.6",
 		"@vueuse/core": "^10.9.0",
-		"class-variance-authority": "^0.7.0",
-		"clsx": "^2.1.0",
 		"lucide-vue-next": "^0.363.0",
 		"nuxt": "^3.11.1",
 		"pinia": "^2.1.7",

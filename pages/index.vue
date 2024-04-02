@@ -7,6 +7,7 @@ definePageMeta({
   middleware: ['auth']
 })
 
+// TODO: create reset function for all stores
 const { accounts } = useAccountsStore()
 const payeeStore = usePayeeStore()
 const { payees } = storeToRefs(payeeStore)
