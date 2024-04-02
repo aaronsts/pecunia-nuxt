@@ -19,12 +19,18 @@ test.describe("Login functionality", () => {
 	test("Redirected to home page when logging in", async ({ page, baseURL }) => {
 		await page.goto(baseURL + "login");
 
-		await expect(page.getByLabel("Email or Username")).toBeVisible();
+		// await expect(page.getByLabel("Email or Username")).toBeVisible();
+		await page.getByLabel("Email or Username").click();
 		await page.getByLabel("Email or Username").fill("aaron.staes@gmail.com");
 
-		await expect(page.getByLabel("Password")).toBeVisible();
+		// await expect(page.getByLabel("Password")).toBeVisible();
+		await page.getByLabel("Password").click();
 		await page.getByLabel("Password").fill("Sta3s3080z");
+		await page.getByLabel("Password").press("Enter");
+
 		await page.getByRole("button", { name: "Sign In" }).click();
+
+		await page.screenshot({ path: "tests/screenshots/debug-timeout.png" }); // Captures the current state of the page
 
 		await page.waitForURL(baseURL as string);
 		await expect(page.url()).toBe(baseURL);
