@@ -1,4 +1,7 @@
-import { test, expect } from "@nuxt/test-utils/playwright";
+import { test, expect } from "@playwright/test";
+
+// Reset storage state for this file to avoid being authenticated
+test.use({ storageState: { cookies: [], origins: [] } });
 
 test.beforeEach(async () => {
 	console.log(`Running ${test.info().title}`);
@@ -9,15 +12,20 @@ test.describe("Login functionality", () => {
 		page,
 		baseURL,
 	}) => {
-		await page.goto("/");
+		await page.goto(baseURL as string);
 		expect(page.url()).toBe(`${baseURL}login`);
 	});
 
 	test("Redirected to home page when logging in", async ({ page, baseURL }) => {
-		await page.goto("/login");
-		await page.getByLabel("email").fill("aaron.staes@gmail.com");
-		await page.getByLabel("password").fill("Sta3s3080z");
-		await page.getByText("Sign In").click();
+		await page.goto(baseURL + "login");
+
+		await expect(page.getByLabel("Email or Username")).toBeVisible();
+		await page.getByLabel("Email or Username").fill("aaron.staes@gmail.com");
+
+		await expect(page.getByLabel("Password")).toBeVisible();
+		await page.getByLabel("Password").fill("Sta3s3080z");
+		await page.getByRole("button", { name: "Sign In" }).click();
+
 		await page.waitForURL(baseURL as string);
 		await expect(page.url()).toBe(baseURL);
 	});

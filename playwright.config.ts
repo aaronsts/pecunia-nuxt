@@ -1,21 +1,21 @@
 import { fileURLToPath } from "node:url";
 import { defineConfig, devices } from "@playwright/test";
-import type { ConfigOptions } from "@nuxt/test-utils/playwright";
+// import type { ConfigOptions } from "@nuxt/test-utils/playwright";
 
-const devicesToTest = [
-	"Desktop Chrome",
-	"Desktop Firefox",
-	"Desktop Safari",
-	// Test against mobile viewports.
-	// 'Pixel 5',
-	// 'iPhone 12',
-	// Test against branded browsers.
-	// { ...devices['Desktop Edge'], channel: 'msedge' },
-	// { ...devices['Desktop Chrome'], channel: 'chrome' },
-] satisfies Array<string | (typeof devices)[string]>;
+// const devicesToTest = [
+// 	"Desktop Chrome",
+// 	"Desktop Firefox",
+// 	// "Desktop Safari",
+// 	// Test against mobile viewports.
+// 	// 'Pixel 5',
+// 	// 'iPhone 12',
+// 	// Test against branded browsers.
+// 	// { ...devices['Desktop Edge'], channel: 'msedge' },
+// 	// { ...devices['Desktop Chrome'], channel: 'chrome' },
+// ] satisfies Array<string | (typeof devices)[string]>;
 
-/* See https://playwright.dev/docs/test-configuration.*/
-export default defineConfig<ConfigOptions>({
+/* See https://playwright.dev/docs/test-configuration */
+export default defineConfig({
 	testDir: "./tests",
 	/* Run tests in files in parallel */
 	fullyParallel: true,
@@ -31,12 +31,41 @@ export default defineConfig<ConfigOptions>({
 	use: {
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: "on-first-retry",
+		baseURL: "http://localhost:3000/",
 		/* Nuxt configuration options */
-		nuxt: {
-			rootDir: fileURLToPath(new URL(".", import.meta.url)),
-		},
+		// nuxt: {
+		// 	rootDir: fileURLToPath(new URL(".", import.meta.url)),
+		// },
 	},
-	projects: devicesToTest.map((p) =>
-		typeof p === "string" ? { name: p, use: devices[p] } : p
-	),
+	projects: [
+		// Setup Project
+		{ name: "setup", testMatch: /.*\.setup.ts/ },
+		{
+			name: "chromium",
+			use: {
+				...devices["Desktop Chrome"],
+				// Use prepared auth state.
+				storageState: "playwright/.auth/user.json",
+			},
+			dependencies: ["setup"],
+		},
+		{
+			name: "firefox",
+			use: {
+				...devices["Desktop Firefox"],
+				// Use prepared auth state.
+				storageState: "playwright/.auth/user.json",
+			},
+			dependencies: ["setup"],
+		},
+		{
+			name: "safari",
+			use: {
+				...devices["Desktop Safari"],
+				// Use prepared auth state.
+				storageState: "playwright/.auth/user.json",
+			},
+			dependencies: ["setup"],
+		},
+	],
 });

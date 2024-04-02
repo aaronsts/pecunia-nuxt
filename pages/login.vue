@@ -37,7 +37,7 @@ const signIn = async () => {
       <div class="max-w-sm p-6">
         <form @submit.prevent="signIn" class="space-y-3">
           <div class="sm:col-span-4">
-            <label for="email" class="block text-sm font-medium leading-6 text-neutral-900">Email address</label>
+            <label for="email" class="block text-sm font-medium leading-6 text-neutral-900">Email or Username</label>
             <input name="email" id="email" type="email" v-model="email"
               class="block w-full rounded-md border-0 py-1.5 text-neutral-900 shadow-sm ring-1 ring-primary-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-300 sm:text-sm sm:leading-6 " />
           </div>
