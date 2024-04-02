@@ -4,7 +4,6 @@ export const useUserStore = defineStore("userStore", () => {
 	const supabase = useSupabaseClient();
 	const user = useSupabaseUser();
 	const accountStore = useAccountsStore();
-	const router = useRouter();
 
 	// State
 	const userProfile = ref({});
@@ -27,9 +26,9 @@ export const useUserStore = defineStore("userStore", () => {
 			const { error } = await supabase.auth.signOut();
 			if (error) throw error;
 
+			navigateTo("/login");
 			// Remove All state
 			accountStore.$reset();
-			router.push("/login");
 		} catch (error) {
 			if (error instanceof Error) console.log(error.message);
 		}

@@ -1,13 +1,13 @@
 import { test, expect } from "@playwright/test";
 
 // Reset storage state for this file to avoid being authenticated
-test.use({ storageState: { cookies: [], origins: [] } });
 
 test.beforeEach(async () => {
 	console.log(`Running ${test.info().title}`);
 });
 
 test.describe("Login functionality", () => {
+	test.use({ storageState: { cookies: [], origins: [] } });
 	test("Redirected to login page when logged out", async ({
 		page,
 		baseURL,
@@ -34,5 +34,15 @@ test.describe("Login functionality", () => {
 
 		await page.waitForURL(baseURL as string);
 		await expect(page.url()).toBe(baseURL);
+	});
+});
+
+test.describe("Logout functionality", () => {
+	test("Logging out redirect to login page", async ({ page, baseURL }) => {
+		await page.goto("/");
+		await page.getByRole("button", { name: "Logout" }).click();
+
+		await page.waitForURL(baseURL + "login");
+		await expect(page.url()).toBe(baseURL + "login");
 	});
 });

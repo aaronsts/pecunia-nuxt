@@ -3,7 +3,6 @@ import NewCategory from '~/components/Category/NewCategory.vue';
 import NewPayee from '~/components/Payee/NewPayee.vue';
 import NewTransaction from '~/components/Transaction/NewTransaction.vue';
 
-
 definePageMeta({
   middleware: ['auth']
 })
