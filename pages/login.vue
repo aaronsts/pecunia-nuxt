@@ -24,7 +24,7 @@ const signInSchema = toTypedSchema(z.object({
 const signIn = async () => {
   try {
     await userStore.login(email.value, password.value)
-    router.push('/profile')
+    router.push('/')
   } catch (error) {
     if (error instanceof Error) errorMsg.value = error.message
   }
