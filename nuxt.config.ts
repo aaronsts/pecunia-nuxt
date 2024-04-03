@@ -2,6 +2,6 @@
 
 export default defineNuxtConfig({
 	devtools: { enabled: true },
-	pinia: {},
+	components: [{ path: "~/components", pathPrefix: false }],
 	modules: ["@nuxtjs/supabase", "@nuxtjs/tailwindcss", "@pinia/nuxt"],
 });

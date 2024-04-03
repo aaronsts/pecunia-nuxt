@@ -6,6 +6,12 @@ definePageMeta({
 
 </script>
 <template>
-  <CategoryList />
-  <CategoryNewCategory />
+  <div>
+    <CategoryList />
+    <NewCategory />
+  </div>
+  <div>
+    <PayeeList />
+    <NewPayee />
+  </div>
 </template>

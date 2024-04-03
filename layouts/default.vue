@@ -43,5 +43,9 @@ onMounted(() => {
     transactionStore.getTransactions()
     transactionStore.initialized()
   }
+  if (!payeeStore.isInitialized) {
+    payeeStore.getPayees()
+    payeeStore.initialized()
+  }
 })
 </script>

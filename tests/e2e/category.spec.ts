@@ -7,14 +7,12 @@ test.describe("CRUD actions for categories", () => {
 	test("can create a category", async ({ page }) => {
 		console.log(`Using ${randomInt} as identifier for categories`);
 		// Create category
-		await page.goto("/");
+		await page.goto("/profile");
 		await page.getByTestId("add-new-category").click();
 		await page.getByTestId("add-new-category").fill(`test-gas ${randomInt}`);
 		await page.getByRole("button", { name: "Add Category" }).click();
 
 		// Verify category has been created
-		await page.goto("/profile");
-		await page.waitForLoadState();
 		expect(page.getByText(`test-gas ${randomInt}`)).toBeDefined();
 	});
 

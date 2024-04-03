@@ -28,8 +28,8 @@ const createNewPayee = handleSubmit((values) => {
 <template>
   <div>
     <form @submit="createNewPayee" class="sm:col-span-4">
-      <label for="payee" class="block text-sm font-medium leading-6 text-neutral-900">Payee</label>
-      <input id="payee" type="text" v-bind="payeeNameAttr" v-model="payeeName"
+      <label for="add-new-payee" class="block text-sm font-medium leading-6 text-neutral-900">Payee</label>
+      <input id="add-new-payee" type="text" v-bind="payeeNameAttr" v-model="payeeName"
         class="block w-full rounded-md  border-0 py-1.5 text-neutral-900 shadow-sm ring-1 ring-primary-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-300 sm:text-sm sm:leading-6"
         :class="{
       '!ring-danger': errors.name
