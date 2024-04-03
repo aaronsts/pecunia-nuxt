@@ -38,7 +38,7 @@ const createNewTransaction = handleSubmit((values) => {
 })
 </script>
 <template>
-  <div class="bg-secondary-100">
+  <div>
     <form @submit="createNewTransaction">
       <div>
         <label for="description" class="block text-sm font-medium leading-6 text-neutral-900">Description</label>

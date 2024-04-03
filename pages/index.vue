@@ -1,18 +1,11 @@
 <script setup lang="ts">
-import NewPayee from '~/components/Payee/NewPayee.vue';
-import NewTransaction from '~/components/Transaction/NewTransaction.vue';
 
 definePageMeta({
   middleware: ['auth']
 })
 
-// TODO: create reset function for all stores
-const { accounts } = useAccountsStore()
-const payeeStore = usePayeeStore()
-const { payees } = storeToRefs(payeeStore)
 const transactionStore = useTransactionStore()
 const { transactions } = storeToRefs(transactionStore)
-const { categories } = useCategoryStore()
 
 
 </script>
@@ -34,13 +27,7 @@ const { categories } = useCategoryStore()
       </option>
     </select>
   </form> -->
-  <ul>
-    <li v-for="(payee) in payees" :key="payee.id" class="flex items-center gap-2">
-      {{ payee.name }} <button @click="payeeStore.deletePayee(payee.id)">Delete Payee</button>
-    </li>
-  </ul>
   <NewTransaction />
-  <NewPayee />
   <ul>
     <li v-for="(transaction) in transactions" :key="transaction.id" class="flex items-center gap-2">
       {{ transaction.description }} - {{ transaction.amount }} <button
