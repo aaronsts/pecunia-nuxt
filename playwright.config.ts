@@ -38,6 +38,7 @@ export default defineConfig({
 	reporter: "line",
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
+		testIdAttribute: "id",
 		/* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
 		actionTimeout: 3000,
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */

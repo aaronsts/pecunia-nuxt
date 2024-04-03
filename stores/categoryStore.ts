@@ -52,6 +52,18 @@ export const useCategoryStore = defineStore("categoryStore", () => {
 		}
 	};
 
+	const deleteCategory = async (id: number) => {
+		try {
+			const { error } = await supabase.from("categorie").delete().eq("id", id);
+			if (error) throw error;
+			categories.value = categories.value.filter(
+				(category) => category.id !== id
+			);
+		} catch (error) {
+			console.log("Error:", error);
+		}
+	};
+
 	return {
 		isInitialized,
 		error,
@@ -60,5 +72,6 @@ export const useCategoryStore = defineStore("categoryStore", () => {
 		initialized,
 		getCategories,
 		addCategory,
+		deleteCategory,
 	};
 });

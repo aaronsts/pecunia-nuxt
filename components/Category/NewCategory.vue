@@ -28,8 +28,8 @@ const createNewCategory = handleSubmit((values) => {
 <template>
   <div>
     <form @submit="createNewCategory" class="sm:col-span-4">
-      <label for="category" class="block text-sm font-medium leading-6 text-neutral-900">Category</label>
-      <input id="category" type="text" v-bind="categoryNameAttr" v-model="categoryName"
+      <label for="add-new-category" class="block text-sm font-medium leading-6 text-neutral-900">Category</label>
+      <input id="add-new-category" type="text" v-bind="categoryNameAttr" v-model="categoryName"
         class="block w-full rounded-md  border-0 py-1.5 text-neutral-900 shadow-sm ring-1 ring-primary-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-300 sm:text-sm sm:leading-6"
         :class="{
       '!ring-danger': errors.name

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import NewCategory from '~/components/Category/NewCategory.vue';
 import NewPayee from '~/components/Payee/NewPayee.vue';
 import NewTransaction from '~/components/Transaction/NewTransaction.vue';
 
@@ -41,7 +40,6 @@ const { categories } = useCategoryStore()
     </li>
   </ul>
   <NewTransaction />
-  <NewCategory />
   <NewPayee />
   <ul>
     <li v-for="(transaction) in transactions" :key="transaction.id" class="flex items-center gap-2">
