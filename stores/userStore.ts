@@ -4,6 +4,7 @@ export const useUserStore = defineStore("userStore", () => {
 	const supabase = useSupabaseClient();
 	const user = useSupabaseUser();
 	const accountStore = useAccountsStore();
+	const resetStore = useResetStore();
 
 	// State
 	const userProfile = ref({});
@@ -26,9 +27,10 @@ export const useUserStore = defineStore("userStore", () => {
 			const { error } = await supabase.auth.signOut();
 			if (error) throw error;
 
+			resetStore.all();
+
 			navigateTo("/login");
 			// Remove All state
-			accountStore.$reset();
 		} catch (error) {
 			if (error instanceof Error) console.log(error.message);
 		}

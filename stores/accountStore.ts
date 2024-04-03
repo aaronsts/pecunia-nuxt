@@ -77,13 +77,6 @@ export const useAccountsStore = defineStore("accountStore", () => {
 		}
 	};
 
-	const $reset = () => {
-		accounts.value = [];
-		isInitialized.value = false;
-		error.value = null;
-		isfetched.value = false;
-	};
-
 	return {
 		isInitialized,
 		accounts,
@@ -95,6 +88,5 @@ export const useAccountsStore = defineStore("accountStore", () => {
 		addAccount,
 		updateAccount,
 		deleteAccount,
-		$reset,
 	};
 });
