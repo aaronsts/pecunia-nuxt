@@ -11,7 +11,7 @@ const { transactions, fetching } = storeToRefs(transactionStore);
         class="flex items-center gap-2"
       >
         {{ transaction.description }} - {{ transaction.amount }}
-        <button @click="transactionStore.destroy(transaction.id)">
+        <button @click="transactionStore.deleteTransaction(transaction.id)">
           Delete Transaction
         </button>
       </li>

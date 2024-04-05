@@ -4,6 +4,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
 definePageMeta({
+  layout: 'app',
   middleware: ['auth']
 })
 

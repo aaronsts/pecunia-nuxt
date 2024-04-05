@@ -1,9 +1,11 @@
 <script setup lang="ts">
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
+
 onMounted(() => {
-  useLoadUserData();
-});
+  useLoadUserData()
+})
+
 </script>
 
 <template>

@@ -4,8 +4,8 @@ export function useLoadUserData() {
   const payeeStore = usePayeeStore();
   const transactionStore = useTransactionStore();
 
-  accountStore.getAll();
-  categoryStore.getAll();
-  transactionStore.getAll();
+  accountStore.getAccounts();
+  categoryStore.getCategories();
+  transactionStore.getTransactions();
   payeeStore.getPayees();
 }

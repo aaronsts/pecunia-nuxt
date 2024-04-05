@@ -5,21 +5,14 @@ import type { Database, Tables } from "~/types/supabase";
 export const useTransactionStore = defineStore("transactionStore", () => {
 	const supabase = useSupabaseClient<Database>();
 	// State
-	const isInitialized = ref(false);
 	const transactions = ref<Tables<"transaction">[]>([]);
 	const error = ref(null);
-	const isfetched = ref(false);
+	const fetching = ref(false);
 
-	const initialized = () => {
-		isInitialized.value = !isInitialized.value;
-	};
-
-	const fetching = () => {
-		isfetched.value = !isfetched.value;
-	};
 
 	const getTransactions = async () => {
 		try {
+			fetching.value = true
 			const { data, error } = await supabase
 				.from("transaction")
 				.select("*")
@@ -27,11 +20,10 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 			if (!data) return;
 			if (error) throw error;
 			data.forEach((transaction) => transactions.value.push(transaction));
+			fetching.value = false
 		} catch (err) {
 			console.log("Something went wrong", err);
-		} finally {
-			fetching();
-		}
+		} 
 	};
 
 	const addTransaction = async (transaction: ITransaction) => {
@@ -68,11 +60,9 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 	};
 
 	return {
-		isInitialized,
 		error,
-		isfetched,
+		fetching,
 		transactions,
-		initialized,
 		getTransactions,
 		addTransaction,
 		deleteTransaction,

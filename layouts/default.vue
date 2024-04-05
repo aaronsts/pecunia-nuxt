@@ -22,30 +22,6 @@
 
 <script setup lang="ts">
 const userStore = useUserStore()
-
 const { user } = storeToRefs(userStore)
 
-const accountStore = useAccountsStore()
-const categoryStore = useCategoryStore()
-const payeeStore = usePayeeStore()
-const transactionStore = useTransactionStore()
-
-onMounted(() => {
-  if (!accountStore.isInitialized) {
-    accountStore.getAccounts()
-    accountStore.initialized()
-  }
-  if (!categoryStore.isInitialized) {
-    categoryStore.getCategories()
-    categoryStore.initialized()
-  }
-  if (!transactionStore.isInitialized) {
-    transactionStore.getTransactions()
-    transactionStore.initialized()
-  }
-  if (!payeeStore.isInitialized) {
-    payeeStore.getPayees()
-    payeeStore.initialized()
-  }
-})
 </script>
