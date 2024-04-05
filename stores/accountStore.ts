@@ -5,36 +5,29 @@ import type { Database, Tables } from "~/types/supabase";
 export const useAccountsStore = defineStore("accountStore", () => {
 	const supabase = useSupabaseClient<Database>();
 	// State
-	const isInitialized = ref(false);
 	const accounts = ref<Tables<"account">[]>([]);
 	const error = ref(null);
-	const isfetched = ref(false);
+	const fetching = ref(false);
 
-	const initialized = () => {
-		isInitialized.value = !isInitialized.value;
-	};
-
-	const fetching = () => {
-		isfetched.value = !isfetched.value;
-	};
-
-	const getAccounts = async () => {
+	const getAll = async () => {
 		try {
-			fetching();
-			const { data } = await supabase
+			fetching.value = true;
+			const { data, error } = await supabase
 				.from("account")
 				.select("*")
 				.order("name", { ascending: true });
+
 			if (!data) return;
+			if (error) throw error;
+
 			data.forEach((account) => accounts.value.push(account));
+			fetching.value = false;
 		} catch (err) {
 			console.log("Something went wrong", error);
-		} finally {
-			fetching();
 		}
 	};
 
-	const addAccount = async (account: IAccount) => {
+	const add = async (account: IAccount) => {
 		try {
 			const { data, error } = await supabase
 				.from("account")
@@ -49,7 +42,7 @@ export const useAccountsStore = defineStore("accountStore", () => {
 		}
 	};
 
-	const updateAccount = async (account: Tables<"account">, index: number) => {
+	const update = async (account: Tables<"account">, index: number) => {
 		try {
 			const { data, error } = await supabase
 				.from("account")
@@ -67,7 +60,7 @@ export const useAccountsStore = defineStore("accountStore", () => {
 		}
 	};
 
-	const deleteAccount = async (id: string, index: number) => {
+	const destroy = async (id: string, index: number) => {
 		try {
 			const { error } = await supabase.from("account").delete().eq("id", id);
 			if (error) throw error;
@@ -78,15 +71,12 @@ export const useAccountsStore = defineStore("accountStore", () => {
 	};
 
 	return {
-		isInitialized,
+		fetching,
 		accounts,
 		error,
-		isfetched,
-		initialized,
-		fetching,
-		getAccounts,
-		addAccount,
-		updateAccount,
-		deleteAccount,
+		getAll,
+		add,
+		update,
+		destroy,
 	};
 });

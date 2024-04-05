@@ -16,7 +16,6 @@ export const usePayeeStore = defineStore("payeeStore", () => {
 				.from("payee")
 				.select("*")
 				.order("name", { ascending: true });
-			console.log("payees", data);
 
 			if (!data) return;
 			if (error) throw error;

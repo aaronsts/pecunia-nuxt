@@ -5,37 +5,27 @@ import type { Database, Tables } from "~/types/supabase";
 export const useCategoryStore = defineStore("categoryStore", () => {
 	const supabase = useSupabaseClient<Database>();
 	// State
-	const isInitialized = ref(false);
 	const categories = ref<Tables<"categorie">[]>([]);
 	const error = ref(null);
-	const isfetched = ref(false);
+	const fetching = ref(false);
 
-	const initialized = () => {
-		isInitialized.value = !isInitialized.value;
-	};
-
-	const fetching = () => {
-		isfetched.value = !isfetched.value;
-	};
-
-	const getCategories = async () => {
+	const getAll = async () => {
 		try {
+			fetching.value = true;
 			const { data, error } = await supabase
 				.from("categorie")
 				.select("*")
 				.order("name", { ascending: true });
-			console.log("categories", data);
 
 			if (!data) return;
 			data.forEach((category) => categories.value.push(category));
+			fetching.value = false;
 		} catch (err) {
 			console.log("Something went wrong", error);
-		} finally {
-			fetching();
 		}
 	};
 
-	const addCategory = async (category: Tables<"categorie"> | ICategory) => {
+	const add = async (category: Tables<"categorie"> | ICategory) => {
 		try {
 			const { data, error } = await supabase
 				.from("categorie")
@@ -52,7 +42,7 @@ export const useCategoryStore = defineStore("categoryStore", () => {
 		}
 	};
 
-	const deleteCategory = async (id: number) => {
+	const destroy = async (id: number) => {
 		try {
 			const { error } = await supabase.from("categorie").delete().eq("id", id);
 			if (error) throw error;
@@ -65,13 +55,11 @@ export const useCategoryStore = defineStore("categoryStore", () => {
 	};
 
 	return {
-		isInitialized,
 		error,
-		isfetched,
+		fetching,
 		categories,
-		initialized,
-		getCategories,
-		addCategory,
-		deleteCategory,
+		getAll,
+		add,
+		destroy,
 	};
 });
