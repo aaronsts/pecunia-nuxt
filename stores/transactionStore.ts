@@ -9,10 +9,9 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 	const error = ref(null);
 	const fetching = ref(false);
 
-
-	const getTransactions = async () => {
+	const getAll = async () => {
 		try {
-			fetching.value = true
+			fetching.value = true;
 			const { data, error } = await supabase
 				.from("transaction")
 				.select("*")
@@ -20,23 +19,23 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 			if (!data) return;
 			if (error) throw error;
 			data.forEach((transaction) => transactions.value.push(transaction));
-			fetching.value = false
+			fetching.value = false;
 		} catch (err) {
 			console.log("Something went wrong", err);
-		} 
+		}
 	};
 
-	const addTransaction = async (transaction: ITransaction) => {
+	const add = async (transaction: ITransaction) => {
 		try {
 			const { data, error } = await supabase
 				.from("transaction")
 				.insert([transaction])
 				.select()
 				.single();
-			console.log("Transaction Added:", data);
 
 			if (error) throw error;
 			if (!data) return;
+
 			transactions.value.push(data);
 		} catch (err: any) {
 			error.value = err;
@@ -44,7 +43,7 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 		}
 	};
 
-	const deleteTransaction = async (id: number) => {
+	const destroy = async (id: number) => {
 		try {
 			const { error } = await supabase
 				.from("transaction")
@@ -63,8 +62,8 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 		error,
 		fetching,
 		transactions,
-		getTransactions,
-		addTransaction,
-		deleteTransaction,
+		getAll,
+		add,
+		destroy,
 	};
 });
