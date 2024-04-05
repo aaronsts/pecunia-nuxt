@@ -28,4 +28,4 @@ logs
 /playwright-report/
 /playwright/.cache/
 playwright/.auth
-/tests/screenshots
+/tests/screenshots/

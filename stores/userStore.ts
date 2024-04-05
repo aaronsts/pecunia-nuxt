@@ -15,8 +15,8 @@ export const useUserStore = defineStore("userStore", () => {
 				email: email,
 				password: password,
 			});
-			accountStore.getAccounts();
 			if (error) throw error;
+			return navigateTo("/");
 		} catch (error: any) {
 			console.error("Login error:", error.message);
 		}
@@ -27,10 +27,9 @@ export const useUserStore = defineStore("userStore", () => {
 			const { error } = await supabase.auth.signOut();
 			if (error) throw error;
 
-			resetStore.all();
-
-			navigateTo("/login");
 			// Remove All state
+			resetStore.all();
+			return navigateTo("/login");
 		} catch (error) {
 			if (error instanceof Error) console.log(error.message);
 		}
