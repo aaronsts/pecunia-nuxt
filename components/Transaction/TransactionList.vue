@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { Trash2 } from "lucide-vue-next";
+
 const transactionStore = useTransactionStore();
 const { transactions, fetching } = storeToRefs(transactionStore);
 </script>
@@ -10,9 +12,10 @@ const { transactions, fetching } = storeToRefs(transactionStore);
 				:key="transaction.id"
 				class="flex items-center gap-2"
 			>
-				{{ transaction.description }} - {{ transaction.amount }}
+				<p>{{ transaction.description }} - {{ transaction.amount }}</p>
 				<button @click="transactionStore.destroy(transaction.id)">
-					Delete Transaction
+					<Trash2 :size="16" />
+					<span class="sr-only">Delete</span>
 				</button>
 			</li>
 		</ul>
