@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
-import type { IAccount } from "~/types";
-import type { Database, Tables } from "~/types/supabase";
+import type { Database, InsertDto, Tables } from "~/types/supabase";
 
 export const useAccountsStore = defineStore("accountStore", () => {
 	const supabase = useSupabaseClient<Database>();
@@ -27,7 +26,7 @@ export const useAccountsStore = defineStore("accountStore", () => {
 		}
 	};
 
-	const add = async (account: IAccount) => {
+	const add = async (account: InsertDto<"account">) => {
 		try {
 			const { data, error } = await supabase
 				.from("account")

@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
-import type { ICategory } from "~/types";
-import type { Database, Tables } from "~/types/supabase";
+import type { Database, InsertDto, Tables } from "~/types/supabase";
 
 export const useCategoryStore = defineStore("categoryStore", () => {
 	const supabase = useSupabaseClient<Database>();
@@ -18,6 +17,8 @@ export const useCategoryStore = defineStore("categoryStore", () => {
 				.order("name", { ascending: true });
 
 			if (!data) return;
+			if (error) throw error;
+
 			data.forEach((category) => categories.value.push(category));
 			fetching.value = false;
 		} catch (err) {
@@ -25,7 +26,7 @@ export const useCategoryStore = defineStore("categoryStore", () => {
 		}
 	};
 
-	const add = async (category: Tables<"categorie"> | ICategory) => {
+	const add = async (category: InsertDto<"categorie">) => {
 		try {
 			const { data, error } = await supabase
 				.from("categorie")
