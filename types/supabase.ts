@@ -268,3 +268,11 @@ export type InsertDto<T extends keyof Database["public"]["Tables"]> =
 	Database["public"]["Tables"][T]["Insert"];
 export type UpdateDto<T extends keyof Database["public"]["Tables"]> =
 	Database["public"]["Tables"][T]["Update"];
+
+/**
+ * Helper types for query results.
+ */
+export type QueryResult<T> = T extends PromiseLike<infer U> ? U : never;
+export type QueryData<T> = T extends PromiseLike<{ data: infer U }>
+	? Exclude<U, null>
+	: never;

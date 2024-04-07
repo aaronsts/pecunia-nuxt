@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
-import type { Database, InsertDto, Row } from "~/types/supabase";
+import type { ITransaction } from "~/types";
+import type { Database, InsertDto, QueryData, Tables } from "~/types/supabase";
 
 export const useTransactionStore = defineStore("transactionStore", () => {
 	const supabase = useSupabaseClient<Database>();
 	// State
-	const transactions = ref<Row<"transaction">[]>([]);
+	const transactions = ref<ITransaction[]>([]);
 	const error = ref(null);
 	const fetching = ref(false);
 
@@ -13,11 +14,13 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 			fetching.value = true;
 			const { data, error } = await supabase
 				.from("transaction")
-				.select("*")
+				.select("*, account (name), categorie (name), payee (name)")
 				.order("transaction_date", { ascending: true });
+
 			if (!data) return;
 			if (error) throw error;
-			data.forEach((transaction) => transactions.value.push(transaction));
+
+			transactions.value = data;
 			fetching.value = false;
 		} catch (err) {
 			console.log("Something went wrong", err);
@@ -28,8 +31,7 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 		try {
 			const { data, error } = await supabase
 				.from("transaction")
-				.insert([transaction])
-				.select()
+				.select("*, account (name), categorie (name), payee (name)")
 				.single();
 
 			if (error) throw error;
