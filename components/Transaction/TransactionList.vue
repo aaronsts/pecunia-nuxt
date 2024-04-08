@@ -3,6 +3,10 @@ import { Trash2 } from "lucide-vue-next";
 
 const transactionStore = useTransactionStore();
 const { transactions, fetching } = storeToRefs(transactionStore);
+
+const editTransaction = () => {
+	console.log("test");
+};
 </script>
 <template>
 	<div>
@@ -12,10 +16,15 @@ const { transactions, fetching } = storeToRefs(transactionStore);
 				:key="transaction.id"
 				class="flex items-center gap-2"
 			>
-				<p>
+				<p @click="editTransaction">
 					{{ transaction.account && transaction.account.name }} |
+
 					{{
-						new Date(transaction.transaction_date).toLocaleDateString("en-us", {
+						new Date(
+							transaction.transaction_date
+								.replace(/-/g, "\/")
+								.replace(/T.+/, "")
+						).toLocaleDateString("en-US", {
 							day: "2-digit",
 							month: "2-digit",
 							year: "numeric",
@@ -33,6 +42,7 @@ const { transactions, fetching } = storeToRefs(transactionStore);
 						}).format(transaction.amount)
 					}}
 				</p>
+				<EditTransaction :transaction="transaction" />
 				<button @click="transactionStore.destroy(transaction.id)">
 					<Trash2 :size="16" />
 					<span class="sr-only">Delete</span>

@@ -53,6 +53,7 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 
 	const update = async (transaction: TablesUpdate<"transaction">) => {
 		try {
+			console.log("in update", transaction);
 			if (!transaction.id) return;
 
 			const { data, error } = await supabase
@@ -95,6 +96,7 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 		transactions,
 		getAll,
 		add,
+		update,
 		destroy,
 	};
 });
