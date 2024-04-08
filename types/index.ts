@@ -4,6 +4,7 @@ export type ITransaction = {
 	id: number;
 	transaction_date: string;
 	user_id: string;
+	payee_id: number | null;
 	payee: IPayee | null;
 	categorie: ICategory | null;
 	account: IAccount | null;

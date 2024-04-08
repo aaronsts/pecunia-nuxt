@@ -21,8 +21,9 @@ const { transactions, fetching } = storeToRefs(transactionStore);
 							year: "numeric",
 						})
 					}}
-					| {{ transaction.payee && transaction.payee.name }} |
-					{{ transaction.categorie && transaction.categorie.name }} |
+					|
+					{{ transaction.payee ? transaction.payee.name : "No Payee added" }}
+					| {{ transaction.categorie && transaction.categorie.name }} |
 					{{ transaction.description }}
 					|
 					{{
