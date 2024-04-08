@@ -63,25 +63,31 @@ const updateTransaction = handleSubmit((values) => {
 </script>
 <template>
 	<div>
-		<form @submit="updateTransaction">
-			<span class="text-danger text-sm">{{ errors.description }}</span>
-
+		<form @submit="updateTransaction" class="flex">
 			<div>
 				<label
-					for="description"
+					for="payee"
 					class="block text-sm font-medium leading-6 text-neutral-900"
-					>Description</label
+					>Payee</label
 				>
-				<input
-					id="description"
-					type="text"
-					v-bind="descriptionProps"
-					v-model="description"
-					class="block w-full rounded-md border-0 py-1.5 text-neutral-900 shadow-sm ring-1 ring-primary-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-300 sm:text-sm sm:leading-6"
-					:class="{ '!ring-danger': errors.description }"
-				/>
-				<span class="text-danger text-sm">{{ errors.description }}</span>
+				<select
+					id="payee"
+					v-model="payee"
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					:class="{ '!ring-danger': errors.payee_id }"
+				>
+					<option
+						v-for="payee in payees"
+						v-bind="payeeProps"
+						:key="payee.id"
+						:value="payee.id"
+					>
+						{{ payee.name }}
+					</option>
+				</select>
+				<span class="text-danger text-sm">{{ errors.payee_id }}</span>
 			</div>
+
 			<div>
 				<label
 					for="amount"
@@ -121,29 +127,7 @@ const updateTransaction = handleSubmit((values) => {
 				</select>
 				<span class="text-danger text-sm">{{ errors.account_id }}</span>
 			</div>
-			<div>
-				<label
-					for="payee"
-					class="block text-sm font-medium leading-6 text-neutral-900"
-					>Payee</label
-				>
-				<select
-					id="payee"
-					v-model="payee"
-					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-					:class="{ '!ring-danger': errors.payee_id }"
-				>
-					<option
-						v-for="payee in payees"
-						v-bind="payeeProps"
-						:key="payee.id"
-						:value="payee.id"
-					>
-						{{ payee.name }}
-					</option>
-				</select>
-				<span class="text-danger text-sm">{{ errors.payee_id }}</span>
-			</div>
+
 			<div>
 				<label
 					for="category"
@@ -169,6 +153,22 @@ const updateTransaction = handleSubmit((values) => {
 			</div>
 			<div>
 				<label
+					for="description"
+					class="block text-sm font-medium leading-6 text-neutral-900"
+					>Description</label
+				>
+				<input
+					id="description"
+					type="text"
+					v-bind="descriptionProps"
+					v-model="description"
+					class="block w-full rounded-md border-0 py-1.5 text-neutral-900 shadow-sm ring-1 ring-primary-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-300 sm:text-sm sm:leading-6"
+					:class="{ '!ring-danger': errors.description }"
+				/>
+				<span class="text-danger text-sm">{{ errors.description }}</span>
+			</div>
+			<div>
+				<label
 					for="date"
 					class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 				>
@@ -186,7 +186,7 @@ const updateTransaction = handleSubmit((values) => {
 				type="submit"
 				class="rounded-md mt-4 hover:bg-primary-200 transition-colors px-3 py-2 bg-primary block text-white"
 			>
-				Add Transaction
+				Save
 			</button>
 		</form>
 	</div>
