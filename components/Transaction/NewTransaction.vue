@@ -3,6 +3,35 @@ import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
 import * as z from "zod";
 
+import Input from "../ui/input/Input.vue";
+import {
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-vue-next";
+
+import { ref } from "vue";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
+
 const user = useSupabaseUser();
 const { accounts } = useAccountsStore();
 const { payees } = usePayeeStore();
@@ -12,154 +41,150 @@ const transactionStore = useTransactionStore();
 const newTransactionSchema = toTypedSchema(
 	z.object({
 		account_id: z.string(),
-		payee_id: z.number(),
-		category_id: z.number(),
+		payee_id: z.string(),
+		category_id: z.string(),
 		amount: z.number(),
 		description: z.string(),
-		transaction_date: z.string(),
+		transaction_date: z.date(),
 	})
 );
 
-const { handleSubmit, errors, defineField } = useForm({
+const { handleSubmit, errors } = useForm({
 	validationSchema: newTransactionSchema,
 });
 
-// Fields
-const [description, descriptionProps] = defineField("description");
-const [account, accountProps] = defineField("account_id");
-const [amount, amountProps] = defineField("amount");
-const [payee, payeeProps] = defineField("payee_id");
-const [category, categoryProps] = defineField("category_id");
-const [date, dateProps] = defineField("transaction_date");
-
 const createNewTransaction = handleSubmit((values) => {
+	console.log("values", values);
 	if (!user.value) return;
 	const data = {
 		...values,
 		user_id: user.value.id,
 	};
-	transactionStore.add(data);
+	// transactionStore.add(data);
 });
 </script>
 <template>
 	<div>
 		<form @submit="createNewTransaction">
-			<div>
-				<label
-					for="description"
-					class="block text-sm font-medium leading-6 text-neutral-900"
-					>Description</label
-				>
-				<input
-					id="description"
-					type="text"
-					v-bind="descriptionProps"
-					v-model="description"
-					class="block w-full rounded-md border-0 py-1.5 text-neutral-900 shadow-sm ring-1 ring-primary-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-300 sm:text-sm sm:leading-6"
-					:class="{ '!ring-danger': errors.description }"
-				/>
-				<span class="text-danger text-sm">{{ errors.description }}</span>
-			</div>
-			<div>
-				<label
-					for="amount"
-					class="block text-sm font-medium leading-6 text-neutral-900"
-					>Amount</label
-				>
-				<input
-					id="amount"
-					type="number"
-					v-bind="amountProps"
-					v-model="amount"
-					class="block w-full rounded-md border-0 py-1.5 text-neutral-900 shadow-sm ring-1 ring-primary-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-300 sm:text-sm sm:leading-6"
-					:class="{ '!ring-danger': errors.amount }"
-				/>
-				<span class="text-danger text-sm">{{ errors.amount }}</span>
-			</div>
-			<div>
-				<label
-					for="account"
-					class="block text-sm font-medium leading-6 text-neutral-900"
-					>Account</label
-				>
-				<select
-					id="account"
-					v-model="account"
-					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-					:class="{ '!ring-danger': errors.account_id }"
-				>
-					<option
-						v-for="account in accounts"
-						v-bind="accountProps"
-						:key="account.id"
-						:value="account.id"
-					>
-						{{ account.name }}
-					</option>
-				</select>
-				<span class="text-danger text-sm">{{ errors.account_id }}</span>
-			</div>
-			<div>
-				<label
-					for="payee"
-					class="block text-sm font-medium leading-6 text-neutral-900"
-					>Payee</label
-				>
-				<select
-					id="payee"
-					v-model="payee"
-					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-					:class="{ '!ring-danger': errors.payee_id }"
-				>
-					<option
-						v-for="payee in payees"
-						v-bind="payeeProps"
-						:key="payee.id"
-						:value="payee.id"
-					>
-						{{ payee.name }}
-					</option>
-				</select>
-				<span class="text-danger text-sm">{{ errors.payee_id }}</span>
-			</div>
-			<div>
-				<label
-					for="category"
-					class="block text-sm font-medium leading-6 text-neutral-900"
-					>Category</label
-				>
-				<select
-					id="category"
-					v-model="category"
-					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-					:class="{ '!ring-danger': errors.category_id }"
-				>
-					<option
-						v-for="category in categories"
-						v-bind="categoryProps"
-						:key="category.id"
-						:value="category.id"
-					>
-						{{ category.name }}
-					</option>
-				</select>
-				<span class="text-danger text-sm">{{ errors.category_id }}</span>
-			</div>
-			<div>
-				<label
-					for="date"
-					class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-				>
-					Date of transaction</label
-				>
-				<input
-					type="date"
-					name="date"
-					id="date"
-					v-model="date"
-					v-bind="dateProps"
-				/>
-			</div>
+			<FormField v-slot="{ componentField }" name="description">
+				<FormItem>
+					<FormLabel>Description</FormLabel>
+					<FormControl>
+						<Input type="text" v-bind="componentField" />
+					</FormControl>
+					<FormMessage />
+				</FormItem>
+			</FormField>
+
+			<FormField v-slot="{ componentField }" name="amount">
+				<FormItem>
+					<FormLabel>Amount</FormLabel>
+					<FormControl>
+						<Input type="number" v-bind="componentField" />
+					</FormControl>
+					<FormMessage />
+				</FormItem>
+			</FormField>
+
+			<FormField v-slot="{ componentField }" name="account_id">
+				<FormItem>
+					<FormLabel>Account</FormLabel>
+					<Select v-bind="componentField">
+						<FormControl>
+							<SelectTrigger>
+								<SelectValue placeholder="Select an account" />
+							</SelectTrigger>
+						</FormControl>
+						<SelectContent>
+							<SelectGroup>
+								<SelectItem v-for="account in accounts" :value="account.id">
+									{{ account.name }}
+								</SelectItem>
+							</SelectGroup>
+						</SelectContent>
+					</Select>
+					<FormMessage />
+				</FormItem>
+			</FormField>
+
+			<FormField v-slot="{ componentField }" name="payee_id">
+				<FormItem>
+					<FormLabel>Payee</FormLabel>
+					<Select v-bind="componentField">
+						<FormControl>
+							<SelectTrigger>
+								<SelectValue placeholder="Select a payee" />
+							</SelectTrigger>
+						</FormControl>
+						<SelectContent>
+							<SelectGroup>
+								<SelectItem
+									v-for="payee in payees"
+									:value="payee.id.toString()"
+								>
+									{{ payee.name }}
+								</SelectItem>
+							</SelectGroup>
+						</SelectContent>
+					</Select>
+					<FormMessage />
+				</FormItem>
+			</FormField>
+
+			<FormField v-slot="{ componentField }" name="category_id">
+				<FormItem>
+					<FormLabel>Category</FormLabel>
+					<Select v-bind="componentField">
+						<FormControl>
+							<SelectTrigger>
+								<SelectValue placeholder="Select a category" />
+							</SelectTrigger>
+						</FormControl>
+						<SelectContent>
+							<SelectGroup>
+								<SelectItem
+									v-for="category in categories"
+									:value="category.id.toString()"
+								>
+									{{ category.name }}
+								</SelectItem>
+							</SelectGroup>
+						</SelectContent>
+					</Select>
+					<FormMessage />
+				</FormItem>
+			</FormField>
+
+			<FormField v-slot="{ componentField, value }" name="transaction_date">
+				<FormItem class="flex flex-col">
+					<FormLabel>Transaction Date</FormLabel>
+					<Popover>
+						<PopoverTrigger as-child>
+							<FormControl>
+								<Button
+									variant="outline"
+									:class="
+										cn(
+											'w-[240px] ps-3 text-start font-normal',
+											!value && 'text-muted-foreground'
+										)
+									"
+								>
+									<span>{{
+										value ? format(value, "PPP") : "Pick a date"
+									}}</span>
+									<CalendarIcon class="ms-auto h-4 w-4 opacity-50" />
+								</Button>
+							</FormControl>
+						</PopoverTrigger>
+						<PopoverContent class="p-0">
+							<Calendar v-bind="componentField" />
+						</PopoverContent>
+					</Popover>
+					<FormMessage />
+				</FormItem>
+			</FormField>
+
 			<Button type="submit">Add Transaction</Button>
 		</form>
 	</div>
