@@ -153,22 +153,6 @@ const updateTransaction = handleSubmit((values) => {
 			</div>
 			<div>
 				<label
-					for="description"
-					class="block text-sm font-medium leading-6 text-neutral-900"
-					>Description</label
-				>
-				<input
-					id="description"
-					type="text"
-					v-bind="descriptionProps"
-					v-model="description"
-					class="block w-full rounded-md border-0 py-1.5 text-neutral-900 shadow-sm ring-1 ring-primary-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-300 sm:text-sm sm:leading-6"
-					:class="{ '!ring-danger': errors.description }"
-				/>
-				<span class="text-danger text-sm">{{ errors.description }}</span>
-			</div>
-			<div>
-				<label
 					for="date"
 					class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 				>
@@ -182,12 +166,7 @@ const updateTransaction = handleSubmit((values) => {
 					v-bind="dateProps"
 				/>
 			</div>
-			<button
-				type="submit"
-				class="rounded-md mt-4 hover:bg-primary-200 transition-colors px-3 py-2 bg-primary block text-white"
-			>
-				Save
-			</button>
+			<Button type="submit">Save</Button>
 		</form>
 	</div>
 </template>

@@ -93,12 +93,7 @@ const [description, descriptionAttr] = defineField("description");
 				<span class="text-danger">{{ errors.description }}</span>
 			</div>
 			<div class="mt-2">
-				<button
-					type="submit"
-					class="rounded-md hover:bg-primary-200 transition-colors px-3 py-2 bg-primary block text-white"
-				>
-					Add Account
-				</button>
+				<Button type="submit">Add Account</Button>
 			</div>
 		</form>
 	</div>

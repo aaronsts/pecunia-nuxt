@@ -25,13 +25,9 @@ onMounted(() => {
 						<NuxtLink to="accounts">Accounts</NuxtLink>
 					</li>
 				</ul>
-				<button
-					type="button"
-					class="h-fit rounded-md bg-danger px-3 py-2 text-sm text-white"
-					@click="userStore.logout"
-				>
+				<Button type="button" variant="destructive" @click="userStore.logout">
 					Logout
-				</button>
+				</Button>
 			</div>
 		</nav>
 		<main class="mx-auto max-w-6xl px-4 md:px-8">

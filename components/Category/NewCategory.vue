@@ -45,12 +45,7 @@ const createNewCategory = handleSubmit((values) => {
 				}"
 			/>
 			<span class="text-danger text-sm">{{ errors.name }}</span>
-			<button
-				type="submit"
-				class="rounded-md hover:bg-primary-200 transition-colors px-3 py-2 bg-primary block text-white"
-			>
-				Add Category
-			</button>
+			<Button type="submit">Add category</Button>
 		</form>
 	</div>
 </template>

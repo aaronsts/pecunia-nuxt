@@ -160,12 +160,7 @@ const createNewTransaction = handleSubmit((values) => {
 					v-bind="dateProps"
 				/>
 			</div>
-			<button
-				type="submit"
-				class="rounded-md mt-4 hover:bg-primary-200 transition-colors px-3 py-2 bg-primary block text-white"
-			>
-				Add Transaction
-			</button>
+			<Button type="submit">Add Transaction</Button>
 		</form>
 	</div>
 </template>
