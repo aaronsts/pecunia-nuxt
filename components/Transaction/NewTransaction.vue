@@ -19,10 +19,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-vue-next";
 
-import { ref } from "vue";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -38,14 +38,19 @@ const { payees } = usePayeeStore();
 const { categories } = useCategoryStore();
 const transactionStore = useTransactionStore();
 
+const TRANSACTION_TYPES = ["expense", "income"] as const;
+
 const newTransactionSchema = toTypedSchema(
 	z.object({
+		amount: z.number(),
+		transaction_date: z.date(),
+		transaction_type: z.enum(TRANSACTION_TYPES, {
+			required_error: "You need to select a notification type.",
+		}),
 		account_id: z.string(),
+		description: z.string(),
 		payee_id: z.string(),
 		category_id: z.string(),
-		amount: z.number(),
-		description: z.string(),
-		transaction_date: z.date(),
 	})
 );
 
@@ -80,7 +85,62 @@ const createNewTransaction = handleSubmit((values) => {
 </script>
 <template>
 	<div>
-		<form @submit="createNewTransaction">
+		<form class="space-y-6 max-w-md" ubmit="createNewTransaction">
+			<FormField v-slot="{ componentField, value }" name="transaction_date">
+				<FormItem class="flex flex-col">
+					<FormLabel>Transaction Date</FormLabel>
+					<Popover>
+						<PopoverTrigger as-child>
+							<FormControl>
+								<Button
+									variant="outline"
+									:class="
+										cn(
+											'w-[240px] ps-3 text-start font-normal',
+											!value && 'text-muted-foreground'
+										)
+									"
+								>
+									<span>{{ value ? format(value, "P") : "Pick a date" }}</span>
+									<CalendarIcon class="ms-auto h-4 w-4 opacity-50" />
+								</Button>
+							</FormControl>
+						</PopoverTrigger>
+						<PopoverContent class="p-0">
+							<Calendar v-bind="componentField" />
+						</PopoverContent>
+					</Popover>
+					<FormMessage />
+				</FormItem>
+			</FormField>
+
+			<FormField
+				v-slot="{ componentField }"
+				type="radio"
+				name="transaction_type"
+			>
+				<FormItem class="space-y-3">
+					<FormLabel class="sr-only">Transaction Type</FormLabel>
+					<FormControl>
+						<RadioGroup class="flex gap-6" v-bind="componentField">
+							<FormItem class="flex items-center space-y-0 gap-x-3">
+								<FormControl>
+									<RadioGroupItem value="expense" />
+								</FormControl>
+								<FormLabel class="font-normal"> Expense </FormLabel>
+							</FormItem>
+							<FormItem class="flex items-center space-y-0 gap-x-3">
+								<FormControl>
+									<RadioGroupItem value="income" />
+								</FormControl>
+								<FormLabel class="font-normal"> Income </FormLabel>
+							</FormItem>
+						</RadioGroup>
+					</FormControl>
+					<FormMessage />
+				</FormItem>
+			</FormField>
+
 			<FormField v-slot="{ componentField }" name="description">
 				<FormItem>
 					<FormLabel>Description</FormLabel>
@@ -166,34 +226,6 @@ const createNewTransaction = handleSubmit((values) => {
 							</SelectGroup>
 						</SelectContent>
 					</Select>
-					<FormMessage />
-				</FormItem>
-			</FormField>
-
-			<FormField v-slot="{ componentField, value }" name="transaction_date">
-				<FormItem class="flex flex-col">
-					<FormLabel>Transaction Date</FormLabel>
-					<Popover>
-						<PopoverTrigger as-child>
-							<FormControl>
-								<Button
-									variant="outline"
-									:class="
-										cn(
-											'w-[240px] ps-3 text-start font-normal',
-											!value && 'text-muted-foreground'
-										)
-									"
-								>
-									<span>{{ value ? format(value, "P") : "Pick a date" }}</span>
-									<CalendarIcon class="ms-auto h-4 w-4 opacity-50" />
-								</Button>
-							</FormControl>
-						</PopoverTrigger>
-						<PopoverContent class="p-0">
-							<Calendar v-bind="componentField" />
-						</PopoverContent>
-					</Popover>
 					<FormMessage />
 				</FormItem>
 			</FormField>
