@@ -56,11 +56,26 @@ const { handleSubmit, errors } = useForm({
 const createNewTransaction = handleSubmit((values) => {
 	console.log("values", values);
 	if (!user.value) return;
+
+	const formattedDate = values.transaction_date.toISOString();
+
+	// console.log(
+	// 	formattedDate,
+	// 	format(values.transaction_date, "P"),
+	// 	new Date(formattedDate).toLocaleDateString("en-US", {
+	// 		day: "2-digit",
+	// 		month: "2-digit",
+	// 		year: "numeric",
+	// 	})
+	// );
 	const data = {
 		...values,
 		user_id: user.value.id,
+		transaction_date: formattedDate,
+		payee_id: parseInt(values.payee_id),
+		category_id: parseInt(values.category_id),
 	};
-	// transactionStore.add(data);
+	transactionStore.add(data);
 });
 </script>
 <template>
@@ -170,9 +185,7 @@ const createNewTransaction = handleSubmit((values) => {
 										)
 									"
 								>
-									<span>{{
-										value ? format(value, "PPP") : "Pick a date"
-									}}</span>
+									<span>{{ value ? format(value, "P") : "Pick a date" }}</span>
 									<CalendarIcon class="ms-auto h-4 w-4 opacity-50" />
 								</Button>
 							</FormControl>
