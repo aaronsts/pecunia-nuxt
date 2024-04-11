@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import path from "path";
 
 export default defineNuxtConfig({
 	modules: [
@@ -6,6 +7,7 @@ export default defineNuxtConfig({
 		"@nuxtjs/tailwindcss",
 		"@pinia/nuxt",
 		"shadcn-nuxt",
+		"nuxt-primevue",
 	],
 	devtools: { enabled: true },
 	components: [{ path: "~/components", pathPrefix: false }],
@@ -13,14 +15,15 @@ export default defineNuxtConfig({
 		viewer: false,
 	},
 	shadcn: {
-		/**
-		 * Prefix for all the imported component
-		 */
 		prefix: "",
-		/**
-		 * Directory that the component lives in.
-		 * @default "./components/ui"
-		 */
 		componentDir: "./components/ui",
+	},
+	primevue: {
+		options: {
+			unstyled: true,
+		},
+		importPT: {
+			from: path.resolve(__dirname, "./components/presets/data-table/"),
+		}, //import and apply preset
 	},
 });
