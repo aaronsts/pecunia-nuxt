@@ -1,12 +1,6 @@
 import { defineStore } from "pinia";
 import type { ITransaction } from "~/types";
-import type {
-	Database,
-	InsertDto,
-	QueryData,
-	Tables,
-	TablesUpdate,
-} from "~/types/supabase";
+import type { Database, TablesInsert, TablesUpdate } from "~/types/supabase";
 
 export const useTransactionStore = defineStore("transactionStore", () => {
 	const supabase = useSupabaseClient<Database>();
@@ -33,13 +27,15 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 		}
 	};
 
-	const add = async (transaction: InsertDto<"transaction">) => {
+	const add = async (transaction: TablesInsert<"transaction">) => {
 		try {
 			const { data, error } = await supabase
 				.from("transaction")
 				.insert([transaction])
 				.select("*, account (name), categorie (name), payee (name)")
 				.single();
+
+			console.log("created transaction:", data);
 
 			if (error) throw error;
 			if (!data) return;

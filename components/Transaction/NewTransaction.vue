@@ -59,20 +59,9 @@ const { handleSubmit, errors } = useForm({
 });
 
 const createNewTransaction = handleSubmit((values) => {
-	console.log("values", values);
 	if (!user.value) return;
 
 	const formattedDate = values.transaction_date.toISOString();
-
-	// console.log(
-	// 	formattedDate,
-	// 	format(values.transaction_date, "P"),
-	// 	new Date(formattedDate).toLocaleDateString("en-US", {
-	// 		day: "2-digit",
-	// 		month: "2-digit",
-	// 		year: "numeric",
-	// 	})
-	// );
 	const data = {
 		...values,
 		user_id: user.value.id,
@@ -80,12 +69,13 @@ const createNewTransaction = handleSubmit((values) => {
 		payee_id: parseInt(values.payee_id),
 		category_id: parseInt(values.category_id),
 	};
+
 	transactionStore.add(data);
 });
 </script>
 <template>
 	<div>
-		<form class="space-y-6 max-w-md" ubmit="createNewTransaction">
+		<form class="space-y-6 max-w-sm" @submit="createNewTransaction">
 			<FormField v-slot="{ componentField, value }" name="transaction_date">
 				<FormItem class="flex flex-col">
 					<FormLabel>Transaction Date</FormLabel>
@@ -96,7 +86,7 @@ const createNewTransaction = handleSubmit((values) => {
 									variant="outline"
 									:class="
 										cn(
-											'w-[240px] ps-3 text-start font-normal',
+											'ps-3 text-start font-normal',
 											!value && 'text-muted-foreground'
 										)
 									"
@@ -122,30 +112,27 @@ const createNewTransaction = handleSubmit((values) => {
 				<FormItem class="space-y-3">
 					<FormLabel class="sr-only">Transaction Type</FormLabel>
 					<FormControl>
-						<RadioGroup class="flex gap-6" v-bind="componentField">
+						<RadioGroup
+							class="flex gap-6 w-full justify-center"
+							v-bind="componentField"
+						>
 							<FormItem class="flex items-center space-y-0 gap-x-3">
 								<FormControl>
 									<RadioGroupItem value="expense" />
 								</FormControl>
-								<FormLabel class="font-normal"> Expense </FormLabel>
+								<FormLabel class="font-normal cursor-pointer">
+									Expense
+								</FormLabel>
 							</FormItem>
 							<FormItem class="flex items-center space-y-0 gap-x-3">
 								<FormControl>
 									<RadioGroupItem value="income" />
 								</FormControl>
-								<FormLabel class="font-normal"> Income </FormLabel>
+								<FormLabel class="font-normal cursor-pointer">
+									Income
+								</FormLabel>
 							</FormItem>
 						</RadioGroup>
-					</FormControl>
-					<FormMessage />
-				</FormItem>
-			</FormField>
-
-			<FormField v-slot="{ componentField }" name="description">
-				<FormItem>
-					<FormLabel>Description</FormLabel>
-					<FormControl>
-						<Input type="text" v-bind="componentField" />
 					</FormControl>
 					<FormMessage />
 				</FormItem>
@@ -156,6 +143,16 @@ const createNewTransaction = handleSubmit((values) => {
 					<FormLabel>Amount</FormLabel>
 					<FormControl>
 						<Input type="number" v-bind="componentField" />
+					</FormControl>
+					<FormMessage />
+				</FormItem>
+			</FormField>
+
+			<FormField v-slot="{ componentField }" name="description">
+				<FormItem>
+					<FormLabel>Description</FormLabel>
+					<FormControl>
+						<Input type="text" v-bind="componentField" />
 					</FormControl>
 					<FormMessage />
 				</FormItem>
