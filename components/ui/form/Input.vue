@@ -21,8 +21,12 @@ const id = useId();
 			v-model="value"
 			:type="props.type"
 			:id="id"
-			class="block px-3 pb-2 pt-6 w-full text-base text-gray-700 bg-transparent rounded-lg border-gray-400 appearance-none dark:text-white dark:border-gray-600 placeholder:text-gray-400 placeholder:font-light dark:focus:border-blue-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-gray-700 focus:ring-0 focus:border-gray-900 peer"
-			:class="[errors.length === 0 ? '' : 'border-danger focus:border-danger']"
+			class="block px-3 pb-2 pt-6 w-full text-base text-gray-700 bg-transparent rounded-lg appearance-none placeholder:text-gray-400 placeholder:font-light focus:outline focus:outline-2 focus:-outline-offset-2 focus:ring-0 peer"
+			:class="[
+				errors.length === 0
+					? 'border-gray-400 focus:outline-gray-700'
+					: 'border-danger focus:outline-danger',
+			]"
 			:placeholder="props.placeholder"
 		/>
 		<label
