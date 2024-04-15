@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	body {
+		@apply text-gray-700;
+	}
+	h1 {
+		@apply font-bold text-4xl leading-snug;
+	}
+	h2 {
+		@apply font-medium text-2xl leading-tight;
+	}
+}

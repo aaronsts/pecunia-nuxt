@@ -1,6 +1,5 @@
 <script setup lang="ts">
-const userStore = useUserStore();
-const { user } = storeToRefs(userStore);
+import Header from "~/components/ui/Header.vue";
 
 onMounted(() => {
 	useLoadUserData();
@@ -10,7 +9,8 @@ onMounted(() => {
 <template>
 	<div class="antialiased">
 		<Sidebar />
-		<main class="mx-auto max-w-6xl px-4 md:px-8">
+		<main class="ml-[320px] mx-auto max-w-6xl p-8">
+			<Header />
 			<slot />
 		</main>
 	</div>

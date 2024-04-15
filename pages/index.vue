@@ -13,7 +13,5 @@ onMounted(() => {
 });
 </script>
 <template>
-	<!-- <NewTransaction />
-  <TransactionList /> -->
 	<div></div>
 </template>
