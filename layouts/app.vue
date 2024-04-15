@@ -8,7 +8,7 @@ onMounted(() => {
 </script>
 
 <template>
-	<div>
+	<div class="antialiased">
 		<nav
 			class="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 md:px-8"
 		>

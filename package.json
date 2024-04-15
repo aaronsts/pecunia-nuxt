@@ -13,6 +13,7 @@
 		"lint:fix": "eslint . --fix"
 	},
 	"dependencies": {
+		"@fontsource/ubuntu": "^5.0.12",
 		"@pinia/nuxt": "^0.5.1",
 		"@vee-validate/zod": "^4.12.6",
 		"@vueuse/core": "^10.9.0",
