@@ -12,4 +12,7 @@
 	h2 {
 		@apply font-medium text-2xl leading-tight;
 	}
+	h3 {
+		@apply font-medium text-xl leading-tight;
+	}
 }
