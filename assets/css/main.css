@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-	body {
-		@apply text-gray-700;
+	html {
+		@apply font-sans;
 	}
 	h1 {
 		@apply font-bold text-4xl leading-snug;

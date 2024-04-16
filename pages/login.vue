@@ -2,7 +2,6 @@
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
-import Button from "~/components/ui/Button.vue";
 
 const user = useSupabaseUser();
 const userStore = useUserStore();
@@ -31,51 +30,41 @@ const signIn = handleSubmit(async (values) => {
 </script>
 
 <template>
-	<main class="min-h-screen">
-		<section class="bg-gray-50 dark:bg-gray-900">
-			<div
-				class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
-			>
-				<div
-					class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
-				>
-					<div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-						<h1
-							class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
-						>
-							Sign in to your account
-						</h1>
-						<form @submit="signIn" class="space-y-4 md:space-y-6">
-							<div>
-								<Input
-									type="email"
-									name="email"
-									placeholder="aaron@pecunia.com"
-									label="Email"
-									required="true"
-								/>
-							</div>
-							<div>
-								<Input
-									type="password"
-									name="password"
-									label="Password"
-									required="true"
-								/>
-							</div>
-							<Button>Sign in</Button>
-							<p class="text-sm font-light text-gray-500 dark:text-gray-400">
-								Don’t have an account yet?
-								<NuxtLink
-									class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-									to="/register"
-									>Sign up</NuxtLink
-								>
-							</p>
-						</form>
-					</div>
+	<script setup lang="ts">
+		import { Button } from "@/components/ui/button";
+		import {
+			Card,
+			CardContent,
+			CardDescription,
+			CardFooter,
+			CardHeader,
+			CardTitle,
+		} from "@/components/ui/card";
+		import { Input } from "@/components/ui/input";
+		import { Label } from "@/components/ui/label";
+	</script>
+
+	<template>
+		<Card class="w-full max-w-sm">
+			<CardHeader>
+				<CardTitle class="text-2xl"> Login </CardTitle>
+				<CardDescription>
+					Enter your email below to login to your account.
+				</CardDescription>
+			</CardHeader>
+			<CardContent class="grid gap-4">
+				<div class="grid gap-2">
+					<Label for="email">Email</Label>
+					<Input id="email" type="email" placeholder="m@example.com" required />
 				</div>
-			</div>
-		</section>
-	</main>
+				<div class="grid gap-2">
+					<Label for="password">Password</Label>
+					<Input id="password" type="password" required />
+				</div>
+			</CardContent>
+			<CardFooter>
+				<Button class="w-full"> Sign in </Button>
+			</CardFooter>
+		</Card>
+	</template>
 </template>

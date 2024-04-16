@@ -1,4 +1,5 @@
 const animate = require("tailwindcss-animate");
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -23,6 +24,9 @@ module.exports = {
 		},
 		extend: {
 			colors: {
+				success: "hsl(160, 52%, 59%)",
+				danger: "hsl(342, 64%, 65%)",
+				white: "hsl(0, 0%, 100%)",
 				gray: {
 					50: "hsl(210, 20%, 98%)",
 					100: "hsl(220, 14%, 96%)",
@@ -34,6 +38,19 @@ module.exports = {
 					700: "hsl(217, 19%, 27%)",
 					800: "hsl(215, 28%, 17%)",
 					900: "hsl(221, 39%, 11%)",
+				},
+				primary: {
+					50: "hsl(142, 65%, 97%)",
+					100: "hsl(138, 68%, 93%)",
+					200: "hsl(140, 63%, 85%)",
+					300: "hsl(140, 61%, 73%)",
+					400: "hsl(140, 55%, 52%)",
+					500: "hsl(140, 56%, 45%)",
+					600: "hsl(141, 60%, 36%)",
+					700: "hsl(141, 57%, 29%)",
+					800: "hsl(141, 51%, 24%)",
+					900: "hsl(142, 50%, 20%)",
+					950: "hsl(144, 65%, 10%)",
 				},
 			},
 			keyframes: {
