@@ -1,7 +1,7 @@
 <script lang="ts" setup></script>
 <template>
 	<header class="text-gray-700 space-y-6 border-b border-gray-300 pb-8">
-		<h1>Dashboard</h1>
+		<h4>Dashboard</h4>
 		<div class="flex gap-16">
 			<div>
 				<p class="text-gray-500">Overview</p>

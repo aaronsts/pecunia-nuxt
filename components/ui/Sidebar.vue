@@ -9,12 +9,11 @@ const signOut = () => {
 };
 </script>
 <template>
-	<div class="hidden border-r bg-gray-50 md:block">
-		<div class="flex h-full max-h-screen flex-col gap-2">
-			<div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+	<div class="hidden text-gray-700 bg-gray-50 md:block">
+		<div class="flex h-full max-h-screen flex-col py-5 gap-4">
+			<div class="flex px-4 items-center">
 				<a href="/" class="flex items-center gap-2 font-semibold">
-					<Package2 class="h-6 w-6" />
-					<span class="">Pecunia</span>
+					<h1 class="">Pecunia</h1>
 				</a>
 			</div>
 			<div class="flex-1">
@@ -49,7 +48,7 @@ const signOut = () => {
 				</NuxtLink>
 				<Button
 					@click="signOut"
-					class="flex bg-transparent hover:bg-danger/20 hover:text-danger text-gray-700 w-full justify-start gap-3 rounded-lg px-3 py-2.5 transition-all"
+					class="flex bg-transparent font-normal text-base hover:bg-danger/20 hover:text-danger text-gray-700 w-full justify-start gap-3 rounded-lg px-3 py-2.5 transition-all"
 				>
 					<LogOut class="h-4 w-4" />
 					Logout

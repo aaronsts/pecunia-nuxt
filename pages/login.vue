@@ -49,11 +49,7 @@ const signIn = handleSubmit(async (values) => {
 			</CardHeader>
 			<CardContent class="grid gap-4">
 				<form @submit="signIn" class="grid gap-4">
-					<FormField
-						class="grid gap-2"
-						v-slot="{ componentField }"
-						name="email"
-					>
+					<FormField v-slot="{ componentField }" name="email">
 						<FormItem>
 							<FormLabel>Email</FormLabel>
 							<FormControl>
@@ -66,11 +62,7 @@ const signIn = handleSubmit(async (values) => {
 							<FormMessage />
 						</FormItem>
 					</FormField>
-					<FormField
-						class="grid gap-2"
-						v-slot="{ componentField }"
-						name="password"
-					>
+					<FormField v-slot="{ componentField }" name="password">
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>

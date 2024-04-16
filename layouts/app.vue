@@ -16,11 +16,8 @@ onMounted(() => {
 	>
 		<Sidebar />
 		<div class="flex flex-col">
-			<MobileSidebar />
-			<main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-				<!-- <Header /> -->
-				<slot />
-			</main>
+			<!-- <MobileSidebar /> -->
+			<slot />
 		</div>
 	</div>
 </template>

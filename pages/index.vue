@@ -1,24 +1,65 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
+import Header from "~/components/ui/Header.vue";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useForm } from "vee-validate";
+import {
+	FormControl,
+	FormField,
+	FormInput,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "~/components/ui/form";
 
 definePageMeta({
 	layout: "app",
 	middleware: ["auth"],
 });
+
+const { handleSubmit } = useForm();
+
+const addTransaction = handleSubmit((values) => {
+	console.log(values);
+});
 </script>
 <template>
-	<div class="flex items-center">
-		<h1 class="text-lg font-semibold md:text-2xl">Inventory</h1>
-	</div>
-	<div
-		class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
-	>
-		<div class="flex flex-col items-center gap-1 text-center">
-			<h3 class="text-2xl font-bold tracking-tight">You have no products</h3>
-			<p class="text-sm text-muted-foreground">
-				You can start selling as soon as you add a product.
-			</p>
-			<Button class="mt-4"> Add Product </Button>
+	<main class="flex flex-1 flex-col gap-4 p-4 lg:gap-8 lg:p-8">
+		<Header />
+		<div class="flex">
+			<Card>
+				<CardHeader>
+					<CardTitle>New Transaction</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<Tabs default-value="expense" class="w-[400px]">
+						<TabsList>
+							<TabsTrigger value="expense"> Expense </TabsTrigger>
+							<TabsTrigger value="income"> Income </TabsTrigger>
+						</TabsList>
+						<TabsContent value="expense">
+							<form @submit="addTransaction" class="grid gap-4">
+								<FormField v-slot="{ componentField }" name="Amount">
+									<FormItem>
+										<FormLabel>Amount</FormLabel>
+										<FormControl>
+											<FormInput
+												type="number"
+												placeholder="$0.00"
+												v-bind="componentField"
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								</FormField>
+								<Button>Add Expense</Button>
+							</form>
+						</TabsContent>
+						<TabsContent value="income">
+							Change your password here.
+						</TabsContent>
+					</Tabs>
+				</CardContent>
+			</Card>
 		</div>
-	</div>
+	</main>
 </template>
