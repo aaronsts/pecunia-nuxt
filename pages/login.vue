@@ -3,6 +3,15 @@ import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 
+import {
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "~/components/ui/form";
+import FormInput from "~/components/ui/form/FormInput.vue";
+
 const user = useSupabaseUser();
 const userStore = useUserStore();
 
@@ -30,21 +39,7 @@ const signIn = handleSubmit(async (values) => {
 </script>
 
 <template>
-	<script setup lang="ts">
-		import { Button } from "@/components/ui/button";
-		import {
-			Card,
-			CardContent,
-			CardDescription,
-			CardFooter,
-			CardHeader,
-			CardTitle,
-		} from "@/components/ui/card";
-		import { Input } from "@/components/ui/input";
-		import { Label } from "@/components/ui/label";
-	</script>
-
-	<template>
+	<div class="grid place-items-center h-full">
 		<Card class="w-full max-w-sm">
 			<CardHeader>
 				<CardTitle class="text-2xl"> Login </CardTitle>
@@ -53,18 +48,40 @@ const signIn = handleSubmit(async (values) => {
 				</CardDescription>
 			</CardHeader>
 			<CardContent class="grid gap-4">
-				<div class="grid gap-2">
-					<Label for="email">Email</Label>
-					<Input id="email" type="email" placeholder="m@example.com" required />
-				</div>
-				<div class="grid gap-2">
-					<Label for="password">Password</Label>
-					<Input id="password" type="password" required />
-				</div>
+				<form @submit="signIn" class="grid gap-4">
+					<FormField
+						class="grid gap-2"
+						v-slot="{ componentField }"
+						name="email"
+					>
+						<FormItem>
+							<FormLabel>Email</FormLabel>
+							<FormControl>
+								<FormInput
+									type="email"
+									placeholder="email@example.com"
+									v-bind="componentField"
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					</FormField>
+					<FormField
+						class="grid gap-2"
+						v-slot="{ componentField }"
+						name="password"
+					>
+						<FormItem>
+							<FormLabel>Password</FormLabel>
+							<FormControl>
+								<FormInput type="password" v-bind="componentField" />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					</FormField>
+					<Button class="w-full"> Sign in </Button>
+				</form>
 			</CardContent>
-			<CardFooter>
-				<Button class="w-full"> Sign in </Button>
-			</CardFooter>
 		</Card>
-	</template>
+	</div>
 </template>
