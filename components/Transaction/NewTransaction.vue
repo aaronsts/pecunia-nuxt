@@ -49,7 +49,7 @@ const createNewTransaction = handleSubmit((values) => {
 	<div>
 		<form class="space-y-6 max-w-sm" @submit="createNewTransaction">
 			<div>
-				<!-- <Input name="amount" type="number" label="Amount" placeholder="$0.00" /> -->
+				<Input name="amount" type="number" label="Amount" placeholder="$0.00" />
 				<Input name="amount" type="number" label="Amount" placeholder="$0.00" />
 			</div>
 			<Button type="submit">Add Transaction</Button>

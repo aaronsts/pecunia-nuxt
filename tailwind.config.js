@@ -1,25 +1,28 @@
+const animate = require("tailwindcss-animate");
+
 /** @type {import('tailwindcss').Config} */
-const defaultTheme = require("tailwindcss/defaultTheme");
-export default {
-	darkMode: "class",
+module.exports = {
+	darkMode: ["class"],
 	content: [
-		"./components/**/*.{js,vue,ts}",
-		"./layouts/**/*.vue",
-		"./pages/**/*.vue",
-		"./plugins/**/*.{js,ts}",
-		"./app.vue",
-		"./error.vue",
-		"./node_modules/flowbite/**/*.{js,ts}",
+		"./pages/**/*.{ts,tsx,vue}",
+		"./components/**/*.{ts,tsx,vue}",
+		"./app/**/*.{ts,tsx,vue}",
+		"./src/**/*.{ts,tsx,vue}",
 	],
+	prefix: "",
 	theme: {
+		container: {
+			center: true,
+			padding: "2rem",
+			screens: {
+				"2xl": "1400px",
+			},
+		},
 		fontFamily: {
 			sans: ["Ubuntu", ...defaultTheme.fontFamily.sans],
 		},
 		extend: {
 			colors: {
-				success: "hsl(160, 52%, 59%)",
-				danger: "hsl(342, 64%, 65%)",
-				white: "hsl(0, 0%, 100%)",
 				gray: {
 					50: "hsl(210, 20%, 98%)",
 					100: "hsl(220, 14%, 96%)",
@@ -32,21 +35,22 @@ export default {
 					800: "hsl(215, 28%, 17%)",
 					900: "hsl(221, 39%, 11%)",
 				},
-				primary: {
-					50: "#f1fcf5",
-					100: "#dff9e7",
-					200: "#c1f1d1",
-					300: "#91e4ad",
-					400: "#42c86f",
-					500: "#33b45e",
-					600: "#25944b",
-					700: "#20753e",
-					800: "#1e5d34",
-					900: "#1a4d2d",
-					950: "#092a16",
+			},
+			keyframes: {
+				"accordion-down": {
+					from: { height: 0 },
+					to: { height: "var(--radix-accordion-content-height)" },
 				},
+				"accordion-up": {
+					from: { height: "var(--radix-accordion-content-height)" },
+					to: { height: 0 },
+				},
+			},
+			animation: {
+				"accordion-down": "accordion-down 0.2s ease-out",
+				"accordion-up": "accordion-up 0.2s ease-out",
 			},
 		},
 	},
-	plugins: [require("flowbite/plugin")],
+	plugins: [animate],
 };
