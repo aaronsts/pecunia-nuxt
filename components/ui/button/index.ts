@@ -3,16 +3,16 @@ import { type VariantProps, cva } from "class-variance-authority";
 export { default as Button } from "./Button.vue";
 
 export const buttonVariants = cva(
-	"inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white  active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-gray-950 dark:focus-visible:ring-gray-300",
+	"inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white   transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-gray-950 dark:focus-visible:ring-gray-300",
 	{
 		variants: {
 			variant: {
 				default:
-					"bg-primary-600 text-gray-50 hover:bg-primary-600/90 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90",
+					"bg-primary-600 active:scale-95 text-gray-50 hover:bg-primary-600/90 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90",
 				destructive:
 					"bg-danger text-gray-50 hover:bg-danger/90 dark:bg-red-900 dark:text-gray-50 dark:hover:bg-red-900/90",
 				outline:
-					"border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50",
+					"border border-gray-300 bg-gray-50  hover:text-gray-900 hover:border-gray-900  dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50",
 				secondary:
 					"bg-gray-100 text-gray-900 hover:bg-gray-100/80 dark:bg-gray-800 dark:text-gray-50 dark:hover:bg-gray-800/80",
 				ghost:

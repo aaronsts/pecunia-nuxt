@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import Header from "~/components/ui/Header.vue";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DateFormatter, parseDate } from "@internationalized/date";
+import { toDate } from "radix-vue/date";
 import { useForm } from "vee-validate";
 import {
 	FormControl,
@@ -9,14 +11,43 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "~/components/ui/form";
+} from "@/components/ui/form";
+import { Calendar } from "@/components/ui/calendar";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
+import { toTypedSchema } from "@vee-validate/zod";
+import * as z from "zod";
+import { cn } from "~/lib/utils";
+import { CalendarIcon } from "lucide-vue-next";
 
 definePageMeta({
 	layout: "app",
 	middleware: ["auth"],
 });
 
-const { handleSubmit } = useForm();
+const newTransactionSchema = toTypedSchema(
+	z.object({
+		transaction_date: z
+			.string()
+			.refine((v) => v, { message: "A date is required." }),
+	})
+);
+const { handleSubmit, setValues, values } = useForm({
+	validationSchema: newTransactionSchema,
+});
+
+const df = new DateFormatter("en-US", {
+	dateStyle: "long",
+});
+
+const value = computed({
+	get: () =>
+		values.transaction_date ? parseDate(values.transaction_date) : undefined,
+	set: (val) => val,
+});
 
 const addTransaction = handleSubmit((values) => {
 	console.log(values);
@@ -48,6 +79,53 @@ const addTransaction = handleSubmit((values) => {
 												v-bind="componentField"
 											/>
 										</FormControl>
+										<FormMessage />
+									</FormItem>
+								</FormField>
+								<FormField name="transaction_date">
+									<FormItem class="flex flex-col">
+										<FormLabel>Transaction Date</FormLabel>
+										<Popover>
+											<PopoverTrigger as-child>
+												<FormControl>
+													<Button
+														variant="outline"
+														:class="
+															cn(
+																'w-[240px] ps-3 text-start font-normal',
+																!value && 'text-gray-400'
+															)
+														"
+													>
+														<span>{{
+															value ? df.format(toDate(value)) : "Pick a date"
+														}}</span>
+														<CalendarIcon class="ms-auto h-4 w-4 opacity-80" />
+													</Button>
+													<input hidden />
+												</FormControl>
+											</PopoverTrigger>
+											<PopoverContent class="w-auto p-0">
+												<Calendar
+													v-model="value"
+													calendar-label="Transaction Date"
+													initial-focus
+													@update:model-value="
+														(v) => {
+															if (v) {
+																setValues({
+																	transaction_date: v.toString(),
+																});
+															} else {
+																setValues({
+																	transaction_date: '',
+																});
+															}
+														}
+													"
+												/>
+											</PopoverContent>
+										</Popover>
 										<FormMessage />
 									</FormItem>
 								</FormField>
