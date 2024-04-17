@@ -153,8 +153,11 @@ const createNewTransaction = handleSubmit((values) => {
 					</FormItem>
 				</FormField>
 				<div class="flex">
-					<ArrowRight v-if="type === 'expense'" class="w-8 h-8 self-end mb-1" />
-					<ArrowLeft v-else class="w-8 h-8 self-end mb-1" />
+					<ArrowRight
+						v-if="type === 'expense'"
+						class="text-primary-400 w-8 h-8 self-end mb-1"
+					/>
+					<ArrowLeft v-else class="text-primary-400 w-8 h-8 self-end mb-1" />
 				</div>
 				<FormField v-slot="{ componentField }" name="payee_id">
 					<FormItem>

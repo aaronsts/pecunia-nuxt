@@ -1,15 +1,6 @@
 <script setup lang="ts">
+import { Plus } from "lucide-vue-next";
 import Header from "~/components/ui/Header.vue";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
 
 definePageMeta({
 	layout: "app",
@@ -17,51 +8,18 @@ definePageMeta({
 });
 </script>
 <template>
-	<main class="flex flex-1 flex-col gap-4 p-4 lg:gap-8 lg:p-8">
+	<main class="flex flex-1 flex-col">
 		<Header />
-		<div class="flex">
+		<div class="grid p-4 lg:p-8 gap-4 lg:gap-8">
+			<CreateTransaction />
 			<Card class="w-96">
-				<CardHeader>
-					<CardTitle>New Transaction</CardTitle>
+				<CardHeader class="flex flex-row justify-between"
+					><CardTitle>All Accounts</CardTitle>
+					<Button class="flex items-center gap-1">
+						<Plus class="h-4 w-4" />
+						New Account</Button
+					>
 				</CardHeader>
-				<CardContent>
-					<Tabs default-value="expense" class="w-full space-y-4">
-						<TabsList>
-							<TabsTrigger value="expense"> Expense </TabsTrigger>
-							<TabsTrigger value="income"> Income </TabsTrigger>
-						</TabsList>
-						<TabsContent value="expense">
-							<Dialog>
-								<DialogTrigger as-child
-									><Button class="w-full">Add Expense</Button></DialogTrigger
-								>
-								<DialogContent>
-									<DialogHeader>
-										<DialogTitle>New Expense</DialogTitle>
-										<DialogDescription>
-											<NewTransaction type="expense" />
-										</DialogDescription>
-									</DialogHeader>
-								</DialogContent>
-							</Dialog>
-						</TabsContent>
-						<TabsContent value="income">
-							<Dialog>
-								<DialogTrigger as-child
-									><Button class="w-full">Add Income</Button></DialogTrigger
-								>
-								<DialogContent>
-									<DialogHeader>
-										<DialogTitle>New Income</DialogTitle>
-										<DialogDescription>
-											<NewTransaction type="income" />
-										</DialogDescription>
-									</DialogHeader>
-								</DialogContent>
-							</Dialog>
-						</TabsContent>
-					</Tabs>
-				</CardContent>
 			</Card>
 		</div>
 	</main>
