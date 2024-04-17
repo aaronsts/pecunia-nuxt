@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
-import type { Database, InsertDto, Tables } from "~/types/supabase";
+import type { Database, Tables, TablesInsert } from "~/types/supabase";
 
 export const useCategoryStore = defineStore("categoryStore", () => {
 	const supabase = useSupabaseClient<Database>();
 	// State
-	const categories = ref<Tables<"categorie">[]>([]);
+	const categories = ref<Tables<"category">[]>([]);
 	const error = ref(null);
 	const fetching = ref(false);
 
@@ -12,7 +12,7 @@ export const useCategoryStore = defineStore("categoryStore", () => {
 		try {
 			fetching.value = true;
 			const { data, error } = await supabase
-				.from("categorie")
+				.from("category")
 				.select("*")
 				.order("name", { ascending: true });
 
@@ -26,10 +26,10 @@ export const useCategoryStore = defineStore("categoryStore", () => {
 		}
 	};
 
-	const add = async (category: InsertDto<"categorie">) => {
+	const add = async (category: TablesInsert<"category">) => {
 		try {
 			const { data, error } = await supabase
-				.from("categorie")
+				.from("category")
 				.insert([category])
 				.select()
 				.single();
@@ -45,7 +45,7 @@ export const useCategoryStore = defineStore("categoryStore", () => {
 
 	const destroy = async (id: number) => {
 		try {
-			const { error } = await supabase.from("categorie").delete().eq("id", id);
+			const { error } = await supabase.from("category").delete().eq("id", id);
 			if (error) throw error;
 			categories.value = categories.value.filter(
 				(category) => category.id !== id

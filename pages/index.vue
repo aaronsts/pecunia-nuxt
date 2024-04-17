@@ -20,12 +20,12 @@ definePageMeta({
 	<main class="flex flex-1 flex-col gap-4 p-4 lg:gap-8 lg:p-8">
 		<Header />
 		<div class="flex">
-			<Card>
+			<Card class="w-96">
 				<CardHeader>
 					<CardTitle>New Transaction</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<Tabs default-value="expense" class="w-[400px]">
+					<Tabs default-value="expense" class="w-full space-y-4">
 						<TabsList>
 							<TabsTrigger value="expense"> Expense </TabsTrigger>
 							<TabsTrigger value="income"> Income </TabsTrigger>

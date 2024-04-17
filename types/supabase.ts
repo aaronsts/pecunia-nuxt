@@ -44,7 +44,7 @@ export type Database = {
           },
         ]
       }
-      categorie: {
+      category: {
         Row: {
           created_at: string
           id: number
@@ -106,7 +106,7 @@ export type Database = {
         Row: {
           account_id: string
           amount: number
-          category_id: number
+          category_id: number | null
           description: string | null
           id: number
           payee_id: number | null
@@ -119,7 +119,7 @@ export type Database = {
         Insert: {
           account_id: string
           amount: number
-          category_id: number
+          category_id?: number | null
           description?: string | null
           id?: number
           payee_id?: number | null
@@ -132,7 +132,7 @@ export type Database = {
         Update: {
           account_id?: string
           amount?: number
-          category_id?: number
+          category_id?: number | null
           description?: string | null
           id?: number
           payee_id?: number | null
@@ -154,7 +154,7 @@ export type Database = {
             foreignKeyName: "public_Transaction_category_id_fkey"
             columns: ["category_id"]
             isOneToOne: false
-            referencedRelation: "categorie"
+            referencedRelation: "category"
             referencedColumns: ["id"]
           },
           {

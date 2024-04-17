@@ -5,8 +5,16 @@ import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
 import * as z from "zod";
 import { cn } from "~/lib/utils";
-import { CalendarIcon } from "lucide-vue-next";
+import { ArrowLeft, ArrowRight, CalendarIcon } from "lucide-vue-next";
 import { Textarea } from "@/components/ui/textarea";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 
 const user = useSupabaseUser();
 const { accounts } = useAccountsStore();
@@ -24,10 +32,10 @@ const newTransactionSchema = toTypedSchema(
 		transaction_date: z
 			.string()
 			.refine((v) => v, { message: "A date is required." }),
-		// account_id: z.string(),
+		account_id: z.string(),
 		description: z.string().optional(),
-		// payee_id: z.string().optional(),
-		// category_id: z.string(),
+		payee_id: z.string().optional().nullable(),
+		category_id: z.string().optional().nullable(),
 	})
 );
 
@@ -48,18 +56,15 @@ const value = computed({
 const createNewTransaction = handleSubmit((values) => {
 	if (!user.value) return;
 
-	console.log(values, type);
+	const data = {
+		...values,
+		user_id: user.value.id,
+		payee_id: values.payee_id ? parseInt(values.payee_id) : null,
+		category_id: values.category_id ? parseInt(values.category_id) : null,
+		transaction_type: type,
+	};
 
-	// const formattedDate = values.transaction_date.toISOString();
-	// const data = {
-	// 	...values,
-	// 	user_id: user.value.id,
-	// 	transaction_date: formattedDate,
-	// 	payee_id: parseInt(values.payee_id),
-	// 	category_id: parseInt(values.category_id),
-	// };
-
-	// transactionStore.add(data);
+	transactionStore.add(data);
 });
 </script>
 <template>
@@ -125,6 +130,78 @@ const createNewTransaction = handleSubmit((values) => {
 					<FormMessage />
 				</FormItem>
 			</FormField>
+
+			<div class="w-full flex gap-4">
+				<FormField v-slot="{ componentField }" name="account_id">
+					<FormItem>
+						<FormLabel>Accounts</FormLabel>
+						<Select v-bind="componentField">
+							<FormControl>
+								<SelectTrigger>
+									<SelectValue placeholder="Select an account" />
+								</SelectTrigger>
+							</FormControl>
+							<SelectContent>
+								<SelectGroup>
+									<SelectItem v-for="account in accounts" :value="account.id"
+										>{{ account.name }}
+									</SelectItem>
+								</SelectGroup>
+							</SelectContent>
+						</Select>
+						<FormMessage />
+					</FormItem>
+				</FormField>
+				<div class="flex">
+					<ArrowRight v-if="type === 'expense'" class="w-8 h-8 self-end mb-1" />
+					<ArrowLeft v-else class="w-8 h-8 self-end mb-1" />
+				</div>
+				<FormField v-slot="{ componentField }" name="payee_id">
+					<FormItem>
+						<FormLabel>Payees</FormLabel>
+						<Select v-bind="componentField">
+							<FormControl>
+								<SelectTrigger>
+									<SelectValue placeholder="Select a payee	" />
+								</SelectTrigger>
+							</FormControl>
+							<SelectContent>
+								<SelectGroup>
+									<SelectItem
+										v-for="payee in payees"
+										:value="payee.id.toString()"
+										>{{ payee.name }}
+									</SelectItem>
+								</SelectGroup>
+							</SelectContent>
+						</Select>
+						<FormMessage />
+					</FormItem>
+				</FormField>
+			</div>
+			<FormField v-slot="{ componentField }" name="category_id">
+				<FormItem>
+					<FormLabel>Category</FormLabel>
+					<Select v-bind="componentField">
+						<FormControl>
+							<SelectTrigger>
+								<SelectValue placeholder="Select a category" />
+							</SelectTrigger>
+						</FormControl>
+						<SelectContent>
+							<SelectGroup>
+								<SelectItem
+									v-for="category in categories"
+									:value="category.id.toString()"
+									>{{ category.name }}
+								</SelectItem>
+							</SelectGroup>
+						</SelectContent>
+					</Select>
+					<FormMessage />
+				</FormItem>
+			</FormField>
+
 			<FormField v-slot="{ componentField }" name="description">
 				<FormItem>
 					<FormLabel>Notes</FormLabel>

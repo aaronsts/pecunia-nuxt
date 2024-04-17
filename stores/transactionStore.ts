@@ -14,7 +14,7 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 			fetching.value = true;
 			const { data, error } = await supabase
 				.from("transaction")
-				.select("*, account (name), categorie (name), payee (name)")
+				.select("*, account (name), category (name), payee (name)")
 				.order("transaction_date", { ascending: true });
 
 			if (!data) return;
@@ -32,7 +32,7 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 			const { data, error } = await supabase
 				.from("transaction")
 				.insert([transaction])
-				.select("*, account (name), categorie (name), payee (name)")
+				.select("*, account (name), category (name), payee (name)")
 				.single();
 
 			console.log("created transaction:", data);
@@ -56,7 +56,7 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 				.from("transaction")
 				.update(transaction)
 				.eq("id", transaction.id)
-				.select("*, account (name), categorie (name), payee (name)")
+				.select("*, account (name), category (name), payee (name)")
 				.single();
 
 			if (error) throw error;
