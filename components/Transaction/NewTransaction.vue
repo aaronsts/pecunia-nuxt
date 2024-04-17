@@ -31,7 +31,7 @@ const newTransactionSchema = toTypedSchema(
 		amount: z.number(),
 		transaction_date: z
 			.string()
-			.refine((v) => v, { message: "A date is required." }),
+			.refine((v) => v, { message: "Date is required." }),
 		account_id: z.string(),
 		description: z.string().optional(),
 		payee_id: z.string().optional().nullable(),
