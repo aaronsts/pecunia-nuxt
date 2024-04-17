@@ -11,7 +11,7 @@ export type Database = {
     Tables: {
       account: {
         Row: {
-          amount: number | null
+          amount: number
           created_at: string
           description: string | null
           id: string
@@ -19,7 +19,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          amount?: number | null
+          amount?: number
           created_at?: string
           description?: string | null
           id?: string
@@ -27,7 +27,7 @@ export type Database = {
           user_id: string
         }
         Update: {
-          amount?: number | null
+          amount?: number
           created_at?: string
           description?: string | null
           id?: string
@@ -111,9 +111,7 @@ export type Database = {
           id: number
           payee_id: number | null
           transaction_date: string
-          transaction_type:
-            | Database["public"]["Enums"]["transaction_type"]
-            | null
+          transaction_type: Database["public"]["Enums"]["transaction_type"]
           user_id: string
         }
         Insert: {
@@ -124,9 +122,7 @@ export type Database = {
           id?: number
           payee_id?: number | null
           transaction_date?: string
-          transaction_type?:
-            | Database["public"]["Enums"]["transaction_type"]
-            | null
+          transaction_type: Database["public"]["Enums"]["transaction_type"]
           user_id: string
         }
         Update: {
@@ -137,9 +133,7 @@ export type Database = {
           id?: number
           payee_id?: number | null
           transaction_date?: string
-          transaction_type?:
-            | Database["public"]["Enums"]["transaction_type"]
-            | null
+          transaction_type?: Database["public"]["Enums"]["transaction_type"]
           user_id?: string
         }
         Relationships: [

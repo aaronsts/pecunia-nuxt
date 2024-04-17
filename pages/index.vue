@@ -1,6 +1,23 @@
 <script setup lang="ts">
-import { Plus } from "lucide-vue-next";
+import { ChevronRight, Plus } from "lucide-vue-next";
 import Header from "~/components/ui/Header.vue";
+
+import {
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
+
+const { accounts } = useAccountsStore();
+
+const formatter = new Intl.NumberFormat("en-US", {
+	style: "currency",
+	currency: "USD",
+});
 
 definePageMeta({
 	layout: "app",
@@ -20,6 +37,30 @@ definePageMeta({
 						New Account</Button
 					>
 				</CardHeader>
+				<CardContent>
+					<Table>
+						<TableCaption>A list of your accounts.</TableCaption>
+						<TableHeader>
+							<TableRow>
+								<TableHead> Account </TableHead>
+								<TableHead class="text-right"> Amount </TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							<TableRow v-for="account in accounts" :key="account.id">
+								<TableCell>{{ account.name }}</TableCell>
+								<TableCell
+									class="text-right flex items-center justify-end gap-2"
+								>
+									{{ formatter.format(account.amount)
+									}}<Button variant="secondary" size="icon"
+										><ChevronRight class="w-4 h-4"
+									/></Button>
+								</TableCell>
+							</TableRow>
+						</TableBody>
+					</Table>
+				</CardContent>
 			</Card>
 		</div>
 	</main>
