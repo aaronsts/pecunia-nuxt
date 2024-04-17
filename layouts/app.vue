@@ -11,12 +11,11 @@ onMounted(() => {
 </script>
 
 <template>
-	<div
-		class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]"
-	>
+	<div class="min-h-screen w-full">
 		<Sidebar />
-		<div class="flex flex-col">
+		<div class="flex md:ml-56 lg:ml-72 flex-col">
 			<!-- <MobileSidebar /> -->
+
 			<slot />
 		</div>
 	</div>

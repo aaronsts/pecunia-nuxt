@@ -39,7 +39,7 @@ const newTransactionSchema = toTypedSchema(
 	})
 );
 
-const { handleSubmit, setValues, values, errors } = useForm({
+const { handleSubmit, setValues, values } = useForm({
 	validationSchema: newTransactionSchema,
 });
 
@@ -69,7 +69,7 @@ const createNewTransaction = handleSubmit((values) => {
 </script>
 <template>
 	<div>
-		<form class="grid gap-4" @submit="createNewTransaction">
+		<form class="grid gap-3" @submit="createNewTransaction">
 			<FormField v-slot="{ componentField }" name="amount">
 				<FormItem>
 					<FormLabel>Amount</FormLabel>
@@ -115,10 +115,12 @@ const createNewTransaction = handleSubmit((values) => {
 									(v) => {
 										if (v) {
 											setValues({
+												...values,
 												transaction_date: v.toString(),
 											});
 										} else {
 											setValues({
+												...values,
 												transaction_date: '',
 											});
 										}
