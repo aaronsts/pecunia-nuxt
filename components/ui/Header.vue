@@ -1,6 +1,8 @@
 <script lang="ts" setup></script>
 <template>
-	<header class="text-gray-700 space-y-6 border-b border-gray-300 p-4 lg:p-8">
+	<header
+		class="text-gray-700 bg-white space-y-6 border-b border-gray-300 p-4 lg:p-8"
+	>
 		<h4>Dashboard</h4>
 		<div class="flex gap-16">
 			<div>

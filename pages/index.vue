@@ -1,23 +1,11 @@
 <script setup lang="ts">
-import { ChevronRight, Plus } from "lucide-vue-next";
+import { ChevronRight } from "lucide-vue-next";
+import { toDate } from "radix-vue/date";
 import Header from "~/components/ui/Header.vue";
+import { moneyFormatter, dateFormatter } from "~/lib/utils";
 
-import {
-	Table,
-	TableBody,
-	TableCaption,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
-
-const { accounts } = useAccountsStore();
-
-const formatter = new Intl.NumberFormat("en-US", {
-	style: "currency",
-	currency: "USD",
-});
+const transactionStore = useTransactionStore();
+const { transactions } = storeToRefs(transactionStore);
 
 definePageMeta({
 	layout: "app",
@@ -25,46 +13,41 @@ definePageMeta({
 });
 </script>
 <template>
-	<main class="flex flex-1 flex-col">
-		<div class="grid p-4 lg:p-8 gap-4 lg:gap-8">
+	<div>
+		<Header />
+		<main class="grid grid-cols-[384px_1fr] p-4 lg:p-8 gap-4 lg:gap-8">
 			<CreateTransaction />
-			<Card class="w-96">
-				<CardHeader class="flex flex-row justify-between"
-					><CardTitle>All Accounts</CardTitle>
-					<Dialog>
-						<DialogTrigger as-child
-							><Button class="flex items-center gap-1">
-								<Plus class="h-4 w-4" />
-								New Account</Button
-							></DialogTrigger
-						>
-
-						<DialogContent>
-							<DialogHeader>
-								<DialogTitle>New Account</DialogTitle>
-								<DialogDescription>
-									<NewAccount />
-								</DialogDescription>
-							</DialogHeader>
-						</DialogContent>
-					</Dialog>
+			<Card class="w-full h-fit row-span-2">
+				<CardHeader>
+					<CardTitle>Recent Transactions</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<Table>
-						<TableCaption>A list of your accounts.</TableCaption>
+						<TableCaption>A list of your recent transactions.</TableCaption>
 						<TableHeader>
 							<TableRow>
+								<TableHead> Date </TableHead>
 								<TableHead> Account </TableHead>
+								<TableHead> Payee </TableHead>
+								<TableHead> Category </TableHead>
 								<TableHead class="text-right"> Amount </TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							<TableRow v-for="account in accounts" :key="account.id">
-								<TableCell>{{ account.name }}</TableCell>
+							<TableRow
+								v-for="transaction in transactions"
+								:key="transaction.id"
+							>
+								<TableCell>{{
+									dateFormatter(transaction.transaction_date)
+								}}</TableCell>
+								<TableCell>{{ transaction.account?.name }}</TableCell>
+								<TableCell>{{ transaction.payee?.name }}</TableCell>
+								<TableCell>{{ transaction.category?.name }}</TableCell>
 								<TableCell
 									class="text-right flex items-center justify-end gap-2"
 								>
-									{{ formatter.format(account.amount)
+									{{ moneyFormatter.format(transaction.amount)
 									}}<Button variant="secondary" size="icon"
 										><ChevronRight class="w-4 h-4"
 									/></Button>
@@ -74,6 +57,7 @@ definePageMeta({
 					</Table>
 				</CardContent>
 			</Card>
-		</div>
-	</main>
+			<AccountTable />
+		</main>
+	</div>
 </template>

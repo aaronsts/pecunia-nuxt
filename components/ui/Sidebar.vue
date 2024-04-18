@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { LogOut, Settings } from "lucide-vue-next";
 import { pages } from "~/lib/utils";
-import Header from "./Header.vue";
 
 const userStore = useUserStore();
 
