@@ -1,4 +1,6 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { ArrowDownLeft, ArrowUpRight } from "lucide-vue-next";
+</script>
 <template>
 	<Card class="w-96">
 		<CardHeader>
@@ -7,8 +9,12 @@
 		<CardContent>
 			<Tabs default-value="expense" class="w-full space-y-4">
 				<TabsList>
-					<TabsTrigger value="expense"> Expense </TabsTrigger>
-					<TabsTrigger value="income"> Income </TabsTrigger>
+					<TabsTrigger class="flex items-centers gap-1" value="expense">
+						<ArrowDownLeft class="text-danger" /> Expense
+					</TabsTrigger>
+					<TabsTrigger class="flex items-centers gap-1" value="income"
+						><ArrowUpRight class="text-success" /> Income
+					</TabsTrigger>
 				</TabsList>
 				<TabsContent value="expense">
 					<Dialog>
