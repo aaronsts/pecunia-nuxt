@@ -30,7 +30,6 @@ const { monthlyExpenses, monthlyIncome } = storeToRefs(transactionStore);
 					</p>
 				</CardContent>
 			</Card>
-
 			<Card>
 				<CardHeader class="gap-2 pb-4">
 					<CardTitle>Monthly Income</CardTitle>
@@ -57,7 +56,6 @@ const { monthlyExpenses, monthlyIncome } = storeToRefs(transactionStore);
 					</p>
 				</CardContent>
 			</Card>
-
 			<AccountTable />
 			<RecentTransactions />
 		</main>

@@ -1,45 +1,19 @@
 <script setup lang="ts">
-import { useForm } from "vee-validate";
-import { toTypedSchema } from "@vee-validate/zod";
-import * as z from "zod";
+import Header from "~/components/ui/Header.vue";
 
 definePageMeta({
 	layout: "app",
 	middleware: ["auth"],
 });
-
-const user = useSupabaseUser();
-const accountStore = useAccountsStore();
-
-// Create Account
-const newAccountFormSchema = toTypedSchema(
-	z.object({
-		name: z.string(),
-		amount: z.number(),
-		description: z.string().optional(),
-	})
-);
-const { handleSubmit, errors, defineField } = useForm({
-	validationSchema: newAccountFormSchema,
-});
-
-const createNewAccount = handleSubmit((values) => {
-	if (!user.value) return;
-	const newAccount = {
-		name: values.name,
-		amount: values.amount,
-		description: values.description,
-		user_id: user.value.id,
-	};
-	accountStore.add(newAccount);
-});
-
-const [name, nameAttr] = defineField("name");
-const [amount, amountAttr] = defineField("amount");
-const [description, descriptionAttr] = defineField("description");
 </script>
 <template>
 	<div>
+		<Header text="Accounts" />
+		<div class="p-4">
+			<AccountList />
+		</div>
+	</div>
+	<!-- <div>
 		<form @submit.prevent="createNewAccount" class="max-w-sm">
 			<div class="sm:col-span-4">
 				<label
@@ -97,5 +71,5 @@ const [description, descriptionAttr] = defineField("description");
 			</div>
 		</form>
 	</div>
-	<AccountList />
+	<AccountList /> -->
 </template>

@@ -1,45 +1,85 @@
 <script lang="ts" setup>
-import { ChevronRight } from "lucide-vue-next";
-import { toDate } from "radix-vue/date";
+import { ArrowDownLeft, ArrowUpRight, Plus } from "lucide-vue-next";
 import { moneyFormatter, dateFormatter } from "~/lib/utils";
 
 const transactionStore = useTransactionStore();
 const { transactions } = storeToRefs(transactionStore);
 </script>
 <template>
-	<div class="p4 lg:p-8">
-		<Table>
-			<TableCaption>A list of your transactions.</TableCaption>
-			<TableHeader>
-				<TableRow>
-					<TableHead> Date </TableHead>
-					<TableHead> Account </TableHead>
-					<TableHead> Payee </TableHead>
-					<TableHead> Category </TableHead>
-					<TableHead class="text-right"> Amount </TableHead>
-				</TableRow>
-			</TableHeader>
-			<TableBody>
-				<TableRow v-for="transaction in transactions" :key="transaction.id">
-					<TableCell>{{
-						dateFormatter(transaction.transaction_date)
-					}}</TableCell>
-					<TableCell>{{ transaction.account?.name }}</TableCell>
-					<TableCell>{{ transaction.payee?.name }}</TableCell>
-					<TableCell>{{ transaction.category?.name }}</TableCell>
-					<TableCell class="text-right flex items-center justify-end gap-2">
-						<div
-							class="w-max text-success"
-							v-if="transaction.transaction_type === 'income'"
-						>
-							+{{ moneyFormatter.format(transaction.amount) }}
-						</div>
-						<div class="w-max text-danger" v-else>
-							-{{ moneyFormatter.format(transaction.amount) }}
-						</div>
-					</TableCell>
-				</TableRow>
-			</TableBody>
-		</Table>
+	<div class="p-4">
+		<Card>
+			<CardHeader class="flex flex-row justify-between">
+				<CardTitle>Recent Transactions</CardTitle>
+				<Dialog>
+					<DialogTrigger as-child
+						><Button class="flex items-center gap-1">
+							<Plus class="h-4 w-4" />
+							New Transaction</Button
+						></DialogTrigger
+					>
+					<DialogContent>
+						<DialogHeader>
+							<DialogTitle>New Transaction</DialogTitle>
+							<DialogDescription>
+								<Tabs default-value="expense" class="w-full space-y-4">
+									<TabsList>
+										<TabsTrigger
+											class="flex items-centers gap-1"
+											value="expense"
+										>
+											<ArrowDownLeft class="text-danger" /> Expense
+										</TabsTrigger>
+										<TabsTrigger class="flex items-centers gap-1" value="income"
+											><ArrowUpRight class="text-success" /> Income
+										</TabsTrigger>
+									</TabsList>
+									<TabsContent value="expense">
+										<NewTransaction type="expense" />
+									</TabsContent>
+									<TabsContent value="income">
+										<NewTransaction type="income" />
+									</TabsContent>
+								</Tabs>
+							</DialogDescription>
+						</DialogHeader>
+					</DialogContent>
+				</Dialog>
+			</CardHeader>
+			<CardContent>
+				<Table>
+					<TableCaption>A list of your transactions.</TableCaption>
+					<TableHeader>
+						<TableRow>
+							<TableHead> Date </TableHead>
+							<TableHead> Account </TableHead>
+							<TableHead> Payee </TableHead>
+							<TableHead> Category </TableHead>
+							<TableHead class="text-right"> Amount </TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+						<TableRow v-for="transaction in transactions" :key="transaction.id">
+							<TableCell>{{
+								dateFormatter(transaction.transaction_date)
+							}}</TableCell>
+							<TableCell>{{ transaction.account?.name }}</TableCell>
+							<TableCell>{{ transaction.payee?.name }}</TableCell>
+							<TableCell>{{ transaction.category?.name }}</TableCell>
+							<TableCell class="text-right flex items-center justify-end gap-2">
+								<div
+									class="w-max text-success"
+									v-if="transaction.transaction_type === 'income'"
+								>
+									+{{ moneyFormatter.format(transaction.amount) }}
+								</div>
+								<div class="w-max text-danger" v-else>
+									-{{ moneyFormatter.format(transaction.amount) }}
+								</div>
+							</TableCell>
+						</TableRow>
+					</TableBody>
+				</Table>
+			</CardContent>
+		</Card>
 	</div>
 </template>
