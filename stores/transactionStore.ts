@@ -6,6 +6,9 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 	const supabase = useSupabaseClient<Database>();
 	// State
 	const transactions = ref<ITransaction[]>([]);
+	const monthlyExpenses = ref<number>(0);
+	const monthlyIncome = ref<number>(0);
+
 	const accountStore = useAccountsStore();
 	const { accounts } = storeToRefs(accountStore);
 
@@ -23,6 +26,25 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 			if (error) throw error;
 
 			transactions.value = data;
+
+			monthlyExpenses.value = transactions.value.reduce(
+				(accumulator, transaction) => {
+					return transaction.transaction_type === "expense"
+						? accumulator - transaction.amount
+						: accumulator;
+				},
+				0
+			);
+
+			monthlyIncome.value = transactions.value.reduce(
+				(accumulator, transaction) => {
+					return transaction.transaction_type === "income"
+						? accumulator + transaction.amount
+						: accumulator;
+				},
+				0
+			);
+
 			fetching.value = false;
 		} catch (err) {
 			console.log("Something went wrong", err);
@@ -99,6 +121,8 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 
 	return {
 		fetching,
+		monthlyExpenses,
+		monthlyIncome,
 		transactions,
 		getAll,
 		add,

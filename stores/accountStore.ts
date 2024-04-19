@@ -6,6 +6,7 @@ export const useAccountsStore = defineStore("accountStore", () => {
 	const supabase = useSupabaseClient<Database>();
 	// State
 	const accounts = ref<Tables<"account">[]>([]);
+	const balance = ref<number>(0);
 	const error = ref(null);
 	const fetching = ref(false);
 
@@ -21,6 +22,12 @@ export const useAccountsStore = defineStore("accountStore", () => {
 			if (error) throw error;
 
 			data.forEach((account) => accounts.value.push(account));
+
+			balance.value = accounts.value.reduce(
+				(accumulator, account) => accumulator + account.amount,
+				0
+			);
+
 			fetching.value = false;
 		} catch (err) {
 			console.log("Something went wrong", error);
@@ -79,6 +86,7 @@ export const useAccountsStore = defineStore("accountStore", () => {
 	return {
 		fetching,
 		accounts,
+		balance,
 		error,
 		getAll,
 		add,

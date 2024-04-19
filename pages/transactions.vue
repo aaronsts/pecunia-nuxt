@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import Header from "~/components/ui/Header.vue";
+
 definePageMeta({
 	layout: "app",
 	middleware: ["auth"],
@@ -6,9 +8,7 @@ definePageMeta({
 </script>
 <template>
 	<div>
-		<header class="text-gray-700 p-4 lg:p-8 bg-white border-b border-gray-300">
-			<h3 class="text-gray-700">Transactions</h3>
-		</header>
+		<Header text="Transactions" />
 		<TransactionList />
 	</div>
 </template>
