@@ -11,9 +11,9 @@ onMounted(() => {
 </script>
 
 <template>
-	<div class="min-h-screen w-full">
+	<div class="bg-gray-100 h-screen w-full">
 		<Sidebar />
-		<div class="flex md:ml-56 lg:ml-72 flex-col">
+		<div class="flex md:ml-56 h-full lg:ml-72 flex-col">
 			<!-- <MobileSidebar /> -->
 
 			<slot />

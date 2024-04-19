@@ -3,6 +3,7 @@ export type ITransaction = {
 	description: string | null;
 	id: number;
 	transaction_date: string;
+	transaction_type: "expense" | "income";
 	user_id: string;
 	payee_id: number | null;
 	payee: IPayee | null;

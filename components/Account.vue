@@ -45,7 +45,7 @@ const updateAccount = handleSubmit((values) => {
 		created_at: account.created_at,
 		user_id: user.value.id,
 	};
-	accountStore.update(updatedAccount, index);
+	accountStore.update(updatedAccount);
 });
 </script>
 

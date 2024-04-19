@@ -11,7 +11,7 @@ const signOut = () => {
 <template>
 	<div>
 		<div
-			class="hidden fixed h-full md:w-56 lg:w-72 text-gray-700 bg-white border-r md:block"
+			class="hidden fixed h-full md:w-56 lg:w-72 text-gray-700 bg-white rounded-lg shadow-md md:block"
 		>
 			<div class="flex h-full max-h-screen flex-col py-5 gap-4">
 				<div class="flex px-4 items-center">

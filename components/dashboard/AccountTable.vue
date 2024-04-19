@@ -5,7 +5,7 @@ import { moneyFormatter } from "~/lib/utils";
 const { accounts } = useAccountsStore();
 </script>
 <template>
-	<Card class="w-96">
+	<Card>
 		<CardHeader class="flex flex-row justify-between"
 			><CardTitle>All Accounts</CardTitle>
 			<Dialog>
