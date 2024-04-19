@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
-import type { Database, InsertDto, Tables } from "~/types/supabase";
+import { toast } from "vue-sonner";
+import type { Database, Tables, TablesInsert } from "~/types/supabase";
 
 export const useAccountsStore = defineStore("accountStore", () => {
 	const supabase = useSupabaseClient<Database>();
@@ -26,7 +27,7 @@ export const useAccountsStore = defineStore("accountStore", () => {
 		}
 	};
 
-	const add = async (account: InsertDto<"account">) => {
+	const add = async (account: TablesInsert<"account">) => {
 		try {
 			const { data, error } = await supabase
 				.from("account")
@@ -35,13 +36,16 @@ export const useAccountsStore = defineStore("accountStore", () => {
 				.single();
 			if (error) throw error;
 			if (!data) return;
+			toast.success(`${data.name} has been created`, {
+				description: `${data.description ? data.description : ""}`,
+			});
 			accounts.value.push(data);
 		} catch (error) {
 			console.log("Account Error:", error);
 		}
 	};
 
-	const update = async (account: Tables<"account">, index: number) => {
+	const update = async (account: Tables<"account">) => {
 		try {
 			const { data, error } = await supabase
 				.from("account")
@@ -50,10 +54,13 @@ export const useAccountsStore = defineStore("accountStore", () => {
 				.select()
 				.single();
 
-			if (!data) return;
 			if (error) throw error;
+			if (!data) return;
 
-			accounts.value[index] = account;
+			const indexOfAccount = accounts.value.findIndex(
+				(a) => a.id === account.id
+			);
+			accounts.value[indexOfAccount] = data;
 		} catch (error) {
 			console.log("Update Account Error:", error);
 		}

@@ -5,5 +5,7 @@ definePageMeta({
 });
 </script>
 <template>
-	<div></div>
+	<div class="p4 lg:p-8">
+		<TransactionList />
+	</div>
 </template>

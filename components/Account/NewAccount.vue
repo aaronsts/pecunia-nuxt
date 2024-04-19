@@ -2,6 +2,12 @@
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
+import { toast } from "vue-sonner";
+import { moneyFormatter } from "~/lib/utils";
+import { User } from "lucide-vue-next";
+
+const accountStore = useAccountsStore();
+const user = useSupabaseUser();
 
 const newAccountSchema = toTypedSchema(
 	z.object({
@@ -11,9 +17,15 @@ const newAccountSchema = toTypedSchema(
 	})
 );
 
-const { handleSubmit } = useForm();
+const { handleSubmit } = useForm({ validationSchema: newAccountSchema });
+
 const createNewAccount = handleSubmit((values) => {
-	console.log("NewAccount", values);
+	if (!user.value) return;
+	const data = {
+		...values,
+		user_id: user.value.id,
+	};
+	accountStore.add(data);
 });
 </script>
 <template>

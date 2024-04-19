@@ -6,7 +6,9 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 	const supabase = useSupabaseClient<Database>();
 	// State
 	const transactions = ref<ITransaction[]>([]);
-	const error = ref(null);
+	const accountStore = useAccountsStore();
+	const { accounts } = storeToRefs(accountStore);
+
 	const fetching = ref(false);
 
 	const getAll = async () => {
@@ -29,20 +31,29 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 
 	const add = async (transaction: TablesInsert<"transaction">) => {
 		try {
-			const { data, error } = await supabase
+			const { data: transactionData, error: transactionError } = await supabase
 				.from("transaction")
 				.insert([transaction])
-				.select("*, account (name), category (name), payee (name)")
+				.select("*, account (id, name), category (name), payee (name)")
 				.single();
 
-			console.log("created transaction:", data);
+			if (transactionError) throw transactionError;
 
-			if (error) throw error;
-			if (!data) return;
+			if (!transactionData) return;
 
-			transactions.value.push(data);
+			const account = accounts.value.find(
+				(acc) => acc.id === transactionData.account?.id
+			);
+
+			if (!account) return;
+			transactionData.transaction_type === "expense"
+				? (account.amount -= transactionData.amount)
+				: (account.amount += transactionData.amount);
+
+			accountStore.update(account);
+
+			transactions.value.push(transactionData);
 		} catch (err: any) {
-			error.value = err;
 			console.log("Error:", err);
 		}
 	};
@@ -87,7 +98,6 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 	};
 
 	return {
-		error,
 		fetching,
 		transactions,
 		getAll,
