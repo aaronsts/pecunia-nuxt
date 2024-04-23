@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ChevronRight, Plus } from "lucide-vue-next";
+import { ChevronRight, Plus, SquarePen } from "lucide-vue-next";
 import { moneyFormatter } from "~/lib/utils";
 
 const { accounts } = useAccountsStore();
@@ -22,10 +22,13 @@ const { accounts } = useAccountsStore();
 				</TableHeader>
 				<TableBody>
 					<TableRow v-for="account in accounts" :key="account.id">
-						<TableCell>{{ account.name }}</TableCell>
+						<TableCell> {{ account.name }}</TableCell>
 						<TableCell>{{ account.description }}</TableCell>
-						<TableCell class="text-right flex items-center justify-end gap-2">
+						<TableCell class="text-right">
 							{{ moneyFormatter.format(account.amount) }}
+						</TableCell>
+						<TableCell class="text-center">
+							<EditAccount :account="account" />
 						</TableCell>
 					</TableRow>
 				</TableBody>
