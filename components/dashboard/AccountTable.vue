@@ -8,22 +8,6 @@ const { accounts } = useAccountsStore();
 	<Card>
 		<CardHeader class="flex flex-row justify-between"
 			><CardTitle>All Accounts</CardTitle>
-			<Dialog>
-				<DialogTrigger as-child
-					><Button class="flex items-center gap-1">
-						<Plus class="h-4 w-4" />
-						New Account</Button
-					></DialogTrigger
-				>
-				<DialogContent>
-					<DialogHeader>
-						<DialogTitle>New Account</DialogTitle>
-						<DialogDescription>
-							<NewAccount />
-						</DialogDescription>
-					</DialogHeader>
-				</DialogContent>
-			</Dialog>
 		</CardHeader>
 		<CardContent>
 			<Table>
@@ -38,10 +22,7 @@ const { accounts } = useAccountsStore();
 					<TableRow v-for="account in accounts" :key="account.id">
 						<TableCell>{{ account.name }}</TableCell>
 						<TableCell class="text-right flex items-center justify-end gap-2">
-							{{ moneyFormatter.format(account.amount)
-							}}<Button variant="secondary" size="icon"
-								><ChevronRight class="w-4 h-4"
-							/></Button>
+							{{ moneyFormatter.format(account.amount) }}
 						</TableCell>
 					</TableRow>
 				</TableBody>

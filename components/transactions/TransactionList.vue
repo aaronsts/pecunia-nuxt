@@ -10,40 +10,7 @@ const { transactions } = storeToRefs(transactionStore);
 		<Card>
 			<CardHeader class="flex flex-row justify-between">
 				<CardTitle>Recent Transactions</CardTitle>
-				<Dialog>
-					<DialogTrigger as-child
-						><Button class="flex items-center gap-1">
-							<Plus class="h-4 w-4" />
-							New Transaction</Button
-						></DialogTrigger
-					>
-					<DialogContent>
-						<DialogHeader>
-							<DialogTitle>New Transaction</DialogTitle>
-							<DialogDescription>
-								<Tabs default-value="expense" class="w-full space-y-4">
-									<TabsList>
-										<TabsTrigger
-											class="flex items-centers gap-1"
-											value="expense"
-										>
-											<ArrowDownLeft class="text-danger" /> Expense
-										</TabsTrigger>
-										<TabsTrigger class="flex items-centers gap-1" value="income"
-											><ArrowUpRight class="text-success" /> Income
-										</TabsTrigger>
-									</TabsList>
-									<TabsContent value="expense">
-										<NewTransaction type="expense" />
-									</TabsContent>
-									<TabsContent value="income">
-										<NewTransaction type="income" />
-									</TabsContent>
-								</Tabs>
-							</DialogDescription>
-						</DialogHeader>
-					</DialogContent>
-				</Dialog>
+				<NewTransaction />
 			</CardHeader>
 			<CardContent>
 				<Table>

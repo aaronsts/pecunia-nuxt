@@ -2,9 +2,7 @@
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
-import { toast } from "vue-sonner";
-import { moneyFormatter } from "~/lib/utils";
-import { Plus, User } from "lucide-vue-next";
+import { Plus } from "lucide-vue-next";
 
 const accountStore = useAccountsStore();
 const user = useSupabaseUser();
