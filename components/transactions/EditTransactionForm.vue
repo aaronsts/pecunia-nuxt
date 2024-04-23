@@ -6,6 +6,7 @@ import { toDate } from "radix-vue/date";
 import { useForm } from "vee-validate";
 import { cn } from "~/lib/utils";
 import { ArrowLeft, ArrowRight, CalendarIcon } from "lucide-vue-next";
+import type { ITransaction } from "~/types";
 
 const user = useSupabaseUser();
 const { accounts } = useAccountsStore();
@@ -13,8 +14,8 @@ const { payees } = usePayeeStore();
 const { categories } = useCategoryStore();
 const transactionStore = useTransactionStore();
 
-const { type } = defineProps<{
-	type: "expense" | "income";
+const { transaction } = defineProps<{
+	transaction: ITransaction;
 }>();
 
 const newTransactionSchema = toTypedSchema(
@@ -24,7 +25,7 @@ const newTransactionSchema = toTypedSchema(
 			.string()
 			.refine((v) => v, { message: "Date is required." }),
 		account_id: z.string(),
-		description: z.string().optional(),
+		description: z.string().optional().nullable(),
 		payee_id: z.string().optional().nullable(),
 		category_id: z.string().optional().nullable(),
 	})
@@ -32,6 +33,14 @@ const newTransactionSchema = toTypedSchema(
 
 const { handleSubmit, setValues, values } = useForm({
 	validationSchema: newTransactionSchema,
+	initialValues: {
+		amount: transaction.amount,
+		description: transaction.description,
+		transaction_date: transaction.transaction_date.split("T")[0],
+		payee_id: transaction.payee_id?.toString(),
+		account_id: transaction.account_id,
+		category_id: transaction.category_id?.toString(),
+	},
 });
 
 const df = new DateFormatter("en-US", {
@@ -44,33 +53,34 @@ const value = computed({
 	set: (val) => val,
 });
 
-const createNewTransaction = handleSubmit((values) => {
+const editTransaction = handleSubmit((values) => {
 	if (!user.value) return;
+
+	console.log(values);
 
 	const data = {
 		...values,
+		id: transaction.id,
 		user_id: user.value.id,
 		payee_id: values.payee_id ? parseInt(values.payee_id) : null,
 		category_id: values.category_id ? parseInt(values.category_id) : null,
-		transaction_type: type,
+		transaction_type: transaction.transaction_type,
 	};
 
-	console.log(parseDate(values.transaction_date));
-
-	transactionStore.add(data);
+	transactionStore.update(data);
 });
+
+const removeTransaction = () => {
+	transactionStore.destroy(transaction.id);
+};
 </script>
 <template>
-	<form class="grid gap-2" @submit="createNewTransaction">
+	<form class="grid gap-2" @submit="editTransaction">
 		<FormField v-slot="{ componentField }" name="amount">
 			<FormItem>
 				<FormLabel>Amount</FormLabel>
 				<FormControl>
-					<FormInput
-						type="number"
-						placeholder="$0.00"
-						v-bind="componentField"
-					/>
+					<Input type="number" placeholder="$0.00" v-bind="componentField" />
 				</FormControl>
 				<FormMessage />
 			</FormItem>
@@ -145,7 +155,7 @@ const createNewTransaction = handleSubmit((values) => {
 			</FormField>
 			<div class="flex">
 				<ArrowRight
-					v-if="type === 'expense'"
+					v-if="transaction.transaction_type === 'expense'"
 					class="text-primary-400 w-8 h-8 self-end mb-1"
 				/>
 				<ArrowLeft v-else class="text-primary-400 w-8 h-8 self-end mb-1" />
@@ -207,6 +217,8 @@ const createNewTransaction = handleSubmit((values) => {
 				<FormMessage />
 			</FormItem>
 		</FormField>
-		<Button>Save</Button>
+		<div class="flex justify-end gap-2">
+			<Button>Save</Button>
+		</div>
 	</form>
 </template>

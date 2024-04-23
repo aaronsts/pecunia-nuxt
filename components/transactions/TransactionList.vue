@@ -43,6 +43,9 @@ const { transactions } = storeToRefs(transactionStore);
 									-{{ moneyFormatter.format(transaction.amount) }}
 								</div>
 							</TableCell>
+							<TableCell class="text-center">
+								<EditTransaction :transaction="transaction" />
+							</TableCell>
 						</TableRow>
 					</TableBody>
 				</Table>

@@ -6,6 +6,8 @@ export type ITransaction = {
 	transaction_type: "expense" | "income";
 	user_id: string;
 	payee_id: number | null;
+	account_id: string;
+	category_id: number | null;
 	payee: IPayee | null;
 	category: ICategory | null;
 	account: IAccount | null;

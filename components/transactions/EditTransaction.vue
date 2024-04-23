@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { SquarePen } from "lucide-vue-next";
-import type { Tables } from "~/types/supabase";
+import type { ITransaction } from "~/types";
 
-const { account } = defineProps<{ account: Tables<"account"> }>();
+const { transaction } = defineProps<{ transaction: ITransaction }>();
 </script>
 <template>
 	<Sheet>
@@ -13,10 +13,10 @@ const { account } = defineProps<{ account: Tables<"account"> }>();
 		</SheetTrigger>
 		<SheetContent>
 			<SheetHeader>
-				<SheetTitle>Edit Account</SheetTitle>
+				<SheetTitle>Edit Transaction</SheetTitle>
 			</SheetHeader>
 			<div class="grid gap-4 py-4">
-				<EditAccountForm :account="account" />
+				<EditTransactionForm :transaction="transaction" />
 			</div>
 		</SheetContent>
 	</Sheet>

@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { toast } from "vue-sonner";
 import type { ITransaction } from "~/types";
 import type { Database, TablesInsert, TablesUpdate } from "~/types/supabase";
 
@@ -74,6 +75,8 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 
 			accountStore.update(account);
 
+			toast.success("Transaction Created");
+
 			transactions.value.push(transactionData);
 		} catch (err: any) {
 			console.log("Error:", err);
@@ -82,7 +85,6 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 
 	const update = async (transaction: TablesUpdate<"transaction">) => {
 		try {
-			console.log("in update", transaction);
 			if (!transaction.id) return;
 
 			const { data, error } = await supabase
@@ -95,11 +97,14 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 			if (error) throw error;
 			if (!data) return;
 
+			toast.success("Transaction Updated");
+
 			const indexOfTransaction = transactions.value.findIndex(
 				(t) => t.id === transaction.id
 			);
 			transactions.value[indexOfTransaction] = data;
 		} catch (error) {
+			toast.error("Something went wrong");
 			console.error("Update Transaction Error:", error);
 		}
 	};
@@ -114,6 +119,7 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 			transactions.value = transactions.value.filter(
 				(transaction) => transaction.id !== id
 			);
+			toast.success("Transaction deleted");
 		} catch (error) {
 			console.log("Error:", error);
 		}
