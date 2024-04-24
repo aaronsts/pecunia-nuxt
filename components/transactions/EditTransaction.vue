@@ -14,6 +14,9 @@ const { transaction } = defineProps<{ transaction: ITransaction }>();
 		<SheetContent>
 			<SheetHeader>
 				<SheetTitle>Edit Transaction</SheetTitle>
+				<SheetDescription
+					>Update a previously added transaction</SheetDescription
+				>
 			</SheetHeader>
 			<div class="grid gap-4 py-4">
 				<EditTransactionForm :transaction="transaction" />

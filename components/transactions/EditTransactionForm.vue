@@ -7,6 +7,7 @@ import { useForm } from "vee-validate";
 import { cn } from "~/lib/utils";
 import { ArrowLeft, ArrowRight, CalendarIcon } from "lucide-vue-next";
 import type { ITransaction } from "~/types";
+import MoneyInput from "../ui/input/MoneyInput.vue";
 
 const user = useSupabaseUser();
 const { accounts } = useAccountsStore();
@@ -80,7 +81,7 @@ const removeTransaction = () => {
 			<FormItem>
 				<FormLabel>Amount</FormLabel>
 				<FormControl>
-					<Input type="number" placeholder="$0.00" v-bind="componentField" />
+					<MoneyInput placeholder="$0.00" v-bind="componentField" />
 				</FormControl>
 				<FormMessage />
 			</FormItem>
