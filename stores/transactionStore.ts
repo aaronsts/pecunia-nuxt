@@ -5,6 +5,7 @@ import type { Database, TablesInsert, TablesUpdate } from "~/types/supabase";
 
 export const useTransactionStore = defineStore("transactionStore", () => {
 	const supabase = useSupabaseClient<Database>();
+	const user = useSupabaseUser();
 	// State
 	const transactions = ref<ITransaction[]>([]);
 	const monthlyExpenses = ref<number>(0);
@@ -17,10 +18,13 @@ export const useTransactionStore = defineStore("transactionStore", () => {
 
 	const getAll = async () => {
 		try {
+			if (!user.value) return;
 			fetching.value = true;
+
 			const { data, error } = await supabase
 				.from("transaction")
 				.select("*, account (name), category (name), payee (name)")
+				.eq("user_id", user.value?.id)
 				.order("transaction_date", { ascending: true });
 
 			if (!data) return;

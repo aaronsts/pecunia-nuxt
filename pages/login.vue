@@ -12,12 +12,7 @@ import {
 } from "~/components/ui/form";
 import FormInput from "~/components/ui/form/FormInput.vue";
 
-const user = useSupabaseUser();
 const userStore = useUserStore();
-
-if (user.value) {
-	navigateTo("/profile");
-}
 
 const signInSchema = toTypedSchema(
 	z.object({
@@ -73,6 +68,10 @@ const signIn = handleSubmit(async (values) => {
 					</FormField>
 					<Button class="w-full"> Sign in </Button>
 				</form>
+				<div class="mt-4 text-center text-gray-700 text-sm">
+					Don't have an account?
+					<NuxtLink to="/register" class="underline"> Sign up </NuxtLink>
+				</div>
 			</CardContent>
 		</Card>
 	</div>

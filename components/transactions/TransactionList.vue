@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { ArrowDownLeft, ArrowUpRight, Plus } from "lucide-vue-next";
 import { moneyFormatter, dateFormatter } from "~/lib/utils";
+import { TableSkeleton } from "@/components/ui/skeleton";
 
 const transactionStore = useTransactionStore();
-const { transactions } = storeToRefs(transactionStore);
+const { transactions, fetching } = storeToRefs(transactionStore);
 </script>
 <template>
 	<div class="p-4">
@@ -24,7 +24,7 @@ const { transactions } = storeToRefs(transactionStore);
 							<TableHead class="text-right"> Amount </TableHead>
 						</TableRow>
 					</TableHeader>
-					<TableBody>
+					<TableBody v-if="!fetching">
 						<TableRow v-for="transaction in transactions" :key="transaction.id">
 							<TableCell>{{
 								dateFormatter(transaction.transaction_date)
@@ -32,21 +32,24 @@ const { transactions } = storeToRefs(transactionStore);
 							<TableCell>{{ transaction.account?.name }}</TableCell>
 							<TableCell>{{ transaction.payee?.name }}</TableCell>
 							<TableCell>{{ transaction.category?.name }}</TableCell>
-							<TableCell class="text-right flex items-center justify-end gap-2">
-								<div
+							<TableCell class="text-right">
+								<span
 									class="w-max text-success"
 									v-if="transaction.transaction_type === 'income'"
 								>
 									+{{ moneyFormatter.format(transaction.amount) }}
-								</div>
-								<div class="w-max text-danger" v-else>
+								</span>
+								<span class="w-max text-danger" v-else>
 									-{{ moneyFormatter.format(transaction.amount) }}
-								</div>
+								</span>
 							</TableCell>
 							<TableCell class="text-center">
 								<EditTransaction :transaction="transaction" />
 							</TableCell>
 						</TableRow>
+					</TableBody>
+					<TableBody v-else>
+						<TableSkeleton />
 					</TableBody>
 				</Table>
 			</CardContent>

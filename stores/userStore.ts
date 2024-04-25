@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 export const useUserStore = defineStore("userStore", () => {
 	const supabase = useSupabaseClient();
 	const user = useSupabaseUser();
-	const accountStore = useAccountsStore();
 	const resetStore = useResetStore();
 
 	// State
